@@ -1,16 +1,17 @@
 {
-  "name": "example-cra-app",
+  "name": "gjv-dev-app-water-boy",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --watchAll=false",
+    "test:dev": "react-scripts test",
     "eject": "react-scripts eject",
     "flow": "flow",
     "clean": "rimraf ./build",
-    "lint": "eslint \"src/**/*.js\"",
-    "lint:fix": "eslint \"src/**/*.js\" --fix"
+    "lint": "eslint ./src",
+    "lint:fix": "eslint ./src --fix"
   },
   "browserslist": {
     "production": [
@@ -25,22 +26,21 @@
     ]
   },
   "dependencies": {
-    "@material-ui/core": "^4.3.1",
+    "@material-ui/core": "^4.3.2",
     "@material-ui/icons": "^4.2.1",
     "@material-ui/styles": "^4.3.0",
-    "mdi-material-ui": "^6.2.0",
+    "mdi-material-ui": "^6.3.0",
     "ramda": "^0.26.1",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-redux": "^7.1.0",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.0.1",
+    "react-scripts": "^3.1.0",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
-    "babel-eslint": "10.0.1",
-    "eslint": "^5.16.0",
+    "eslint": "^6.1.0",
     "eslint-plugin-babel": "^5.3.0",
     "eslint-plugin-flowtype": "^3.13.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
