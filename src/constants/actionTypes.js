@@ -27,3 +27,4 @@
 
 export const THEME_ID__SET = 'THEME_ID__SET';
 export const THEME_TYPE__UPDATE = 'THEME_TYPE__UPDATE';
+export const REHYDRATE = 'persist/REHYDRATE';

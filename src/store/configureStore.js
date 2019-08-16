@@ -1,5 +1,8 @@
 import {applyMiddleware, createStore} from 'redux';
 import thunk from 'redux-thunk';
+import {persistStore, persistReducer} from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import rootReducer from '../reducers';
 import * as R from 'ramda';
 
@@ -35,10 +38,23 @@ const crashReporter = () => next => action => {
     return null;
 };
 
-const configureStore = preloadedState => createStore(
-    rootReducer,
-    preloadedState,
-    applyMiddleware(thunk, crashReporter, logger)
-);
+const persistConfig = {
+    key: 'root',
+    storage,
+    stateReconciler: autoMergeLevel2
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+const configureStore = (initialState) => {
+    const store = createStore(
+        persistedReducer,
+        initialState,
+        applyMiddleware(thunk, crashReporter, logger)
+    );
+    const persistor = persistStore(store);
+
+    return {store, persistor};
+};
 
 export default configureStore;
