@@ -19,7 +19,7 @@ const theme = (state: AppTheme = initialState, action: Action = defaultAction) =
         case THEME_TYPE__UPDATE:
             return AppTheme.create({...stateCopy, type: action.payload});
         case REHYDRATE:
-            return AppTheme.create({...stateCopy, ...action.payload.theme});
+            return AppTheme.create({...stateCopy, ...((action.payload || {}).theme || {})});
         default:
             return AppTheme.create(stateCopy);
     }
