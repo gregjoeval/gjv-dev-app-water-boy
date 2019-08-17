@@ -4,7 +4,14 @@ import AppTheme from '../models/theme';
 
 const initialState = AppTheme.create();
 
-const theme = (state = initialState, action) => {
+const defaultAction = {type: null, payload: {}};
+
+type Action = {
+    type: string,
+    payload: Object
+}
+
+const theme = (state: AppTheme = initialState, action: Action = defaultAction) => {
     const stateCopy = R.clone(state);
     switch (action.type) {
         case THEME_ID__SET:
