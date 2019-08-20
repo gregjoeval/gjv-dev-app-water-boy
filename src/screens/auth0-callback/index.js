@@ -5,15 +5,16 @@ import AppHeader from '../../components/app-header';
 import ScreenLayout from '../../components/screen-layout';
 import ContentLayout from '../../components/content-layout';
 import {useAuth} from 'react-use-auth';
+import {useAuth0} from '../../components/auth-provider';
 
 const Auth0Callback = (): Component => {
-    const {isAuthenticated, handleAuthentication} = useAuth();
+    const {isAuthenticated, handleRedirectCallback} = useAuth0();
 
     useEffect(() => {
-        if (!isAuthenticated()) {
-            handleAuthentication();
+        if (!isAuthenticated) {
+            handleRedirectCallback();
         }
-    }, [isAuthenticated, handleAuthentication]);
+    }, [isAuthenticated, handleRedirectCallback]);
 
     return (
         <ScreenLayout

@@ -6,6 +6,7 @@ import AppHeader from '../../components/app-header';
 import ScreenLayout from '../../components/screen-layout';
 import ContentLayout from '../../components/content-layout';
 import {useAuth} from 'react-use-auth';
+import {useAuth0} from '../../components/auth-provider';
 
 const mapStateToProps = state => ({});
 
@@ -14,7 +15,7 @@ const mapDispatchToProps = dispatch => ({});
 type Props = {};
 
 const Secret = ({}: Props): Component => {
-    const {user} = useAuth();
+    const {user} = useAuth0();
     return (
         <ScreenLayout
             header={<AppHeader/>}
