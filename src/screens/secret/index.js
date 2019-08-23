@@ -1,11 +1,11 @@
 // @flow
 import React, {Component} from 'react';
-import {Typography} from '@material-ui/core';
+import {Typography, Button} from '@material-ui/core';
 import {connect} from 'react-redux';
 import AppHeader from '../../components/app-header';
 import ScreenLayout from '../../components/screen-layout';
 import ContentLayout from '../../components/content-layout';
-import {useAuth} from 'react-use-auth';
+import {useAuth0} from '../../components/auth-provider';
 
 const mapStateToProps = state => ({});
 
@@ -14,7 +14,7 @@ const mapDispatchToProps = dispatch => ({});
 type Props = {};
 
 const Secret = ({}: Props): Component => {
-    const {user} = useAuth();
+    const {user, logout} = useAuth0();
     return (
         <ScreenLayout
             header={<AppHeader/>}
@@ -26,6 +26,11 @@ const Secret = ({}: Props): Component => {
                 <Typography variant={'h5'}>
                     {'Secret'}
                 </Typography>
+                <Button
+                    onClick={() => logout({})}
+                >
+                    {'logout'}
+                </Button>
                 <Typography variant={'body1'}>
                     {'This is the secret page.'}
                 </Typography>

@@ -26,24 +26,24 @@
     ]
   },
   "dependencies": {
-    "@material-ui/core": "^4.3.2",
+    "@auth0/auth0-spa-js": "^1.1.1",
+    "@material-ui/core": "^4.3.3",
     "@material-ui/icons": "^4.2.1",
-    "@material-ui/styles": "^4.3.0",
-    "mdi-material-ui": "^6.3.0",
+    "@material-ui/styles": "^4.3.3",
+    "mdi-material-ui": "^6.4.1",
     "ramda": "^0.26.1",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-redux": "^7.1.0",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "^3.1.0",
-    "react-use-auth": "^0.2.1",
+    "react-scripts": "^3.1.1",
     "redux": "^4.0.4",
     "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "babel-eslint": "10.0.2",
-    "eslint": "^6.1.0",
+    "eslint": "^6.2.1",
     "eslint-plugin-babel": "^5.3.0",
     "eslint-plugin-flowtype": "^3.13.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
@@ -51,6 +51,6 @@
     "eslint-plugin-react-hooks": "^1.7.0",
     "flow": "^0.2.3",
     "flow-bin": "^0.102.0",
-    "rimraf": "^2.6.3"
+    "rimraf": "^2.7.1"
   }
 }
