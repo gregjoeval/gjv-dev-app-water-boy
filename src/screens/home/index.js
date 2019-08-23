@@ -6,7 +6,6 @@ import AppHeader from '../../components/app-header';
 import ScreenLayout from '../../components/screen-layout';
 import ContentLayout from '../../components/content-layout';
 import {Link as RouterLink} from 'react-router-dom';
-import {useAuth} from 'react-use-auth';
 import {useAuth0} from '../../components/auth-provider';
 
 // eslint-disable-next-line no-unused-vars
@@ -20,7 +19,7 @@ type Props = {};
 // TODO: remove next line and actually utilize state variables
 // eslint-disable-next-line no-empty-pattern
 const Home = ({}: Props): Component => {
-    const {isAuthenticated, loginWithRedirect, logout, redirectUri} = useAuth0();
+    const {isAuthenticated, loginWithRedirect, logout} = useAuth0();
 
     return (
         <ScreenLayout
@@ -44,13 +43,13 @@ const Home = ({}: Props): Component => {
                 </Typography>
                 <Button
                     href={null}
-                    onClick={() => loginWithRedirect({redirect_uri: redirectUri})}
+                    onClick={() => loginWithRedirect({})}
                 >
                     {'login'}
                 </Button>
                 <Button
                     href={null}
-                    onClick={logout}
+                    onClick={() => logout({})}
                 >
                     {'logout'}
                 </Button>

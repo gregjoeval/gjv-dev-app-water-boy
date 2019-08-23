@@ -1,20 +1,19 @@
 import React, {Component, useEffect} from 'react';
 import {Link as RouterLink} from 'react-router-dom';
-import {Link, Typography} from '@material-ui/core';
+import {Link, Typography, CircularProgress} from '@material-ui/core';
 import AppHeader from '../../components/app-header';
 import ScreenLayout from '../../components/screen-layout';
 import ContentLayout from '../../components/content-layout';
-import {useAuth} from 'react-use-auth';
 import {useAuth0} from '../../components/auth-provider';
 
 const Auth0Callback = (): Component => {
-    const {isAuthenticated, handleRedirectCallback} = useAuth0();
+    const {loading, isAuthenticated, getTokenSilently} = useAuth0();
 
     useEffect(() => {
-        if (!isAuthenticated) {
-            handleRedirectCallback();
+        if (isAuthenticated && getTokenSilently) {
+            getTokenSilently({});
         }
-    }, [isAuthenticated, handleRedirectCallback]);
+    }, [isAuthenticated, getTokenSilently]);
 
     return (
         <ScreenLayout
@@ -27,6 +26,18 @@ const Auth0Callback = (): Component => {
                 <Typography variant={'h5'}>
                     {'Auth0 Callback Page'}
                 </Typography>
+                {
+                    loading && (
+                        <CircularProgress/>
+                    )
+                }
+                {
+                    isAuthenticated && (
+                        <Typography>
+                            {'isAuthenticated'}
+                        </Typography>
+                    )
+                }
                 <Typography variant={'body1'}>
                     {'This is the auth callback page, you should be redirected immediately.'}
                 </Typography>
@@ -42,6 +53,6 @@ const Auth0Callback = (): Component => {
             </ContentLayout>
         </ScreenLayout>
     );
-}
+};
 
 export default Auth0Callback;
