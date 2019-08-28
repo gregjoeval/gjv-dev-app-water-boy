@@ -6,15 +6,16 @@ import {Switch, Route, BrowserRouter} from 'react-router-dom';
 
 // Our Dependencies
 import configureStore from './store/configureStore';
+import AppConfigProvider from './components/app-config-provider';
 import AppThemeProvider from './components/app-theme-provider';
 import AppAuthProvider from './components/app-auth-provider';
-import AuthRoute from './components/private-route';
+import PrivateRoute from './components/private-route';
 
 // Screens
-import Home from './screens/home';
-import NotFound from './screens/not-found';
-import Auth0Callback from './screens/auth0-callback';
-import Secret from './screens/secret';
+import Home, {HomePath} from './screens/home';
+import NotFound, {NotFoundPath} from './screens/not-found';
+import Auth0Callback, {Auth0CallbackPath} from './screens/auth0-callback';
+import Secret, {SecretPath} from './screens/secret';
 
 const preloadedState = {};
 
@@ -23,41 +24,43 @@ const App = () => {
 
     return (
         <BrowserRouter>
-            <AppAuthProvider>
-                <Provider store={store}>
-                    <PersistGate
-                        loading={null}
-                        persistor={persistor}
-                    >
+            <Provider store={store}>
+                <PersistGate
+                    loading={null}
+                    persistor={persistor}
+                >
+                    <AppConfigProvider>
                         <AppThemeProvider>
-                            <Switch>
-                                <AuthRoute
-                                    component={Secret}
-                                    path={'/secret'}
-                                />
-                                <Route
-                                    component={Home}
-                                    exact={true}
-                                    path={'/'}
-                                />
-                                <Route
-                                    component={Home}
-                                    path={'/home'}
-                                />
-                                <Route
-                                    component={Auth0Callback}
-                                    path={'/auth0_callback'}
-                                />
-                                <Route
-                                    component={NotFound}
-                                    path={'/not-found'}
-                                />
-                                <Route component={NotFound}/>
-                            </Switch>
+                            <AppAuthProvider>
+                                <Switch>
+                                    <Route
+                                        component={Home}
+                                        exact={true}
+                                        path={'/'}
+                                    />
+                                    <Route
+                                        component={Home}
+                                        path={HomePath}
+                                    />
+                                    <PrivateRoute
+                                        component={Secret}
+                                        path={SecretPath}
+                                    />
+                                    <Route
+                                        component={Auth0Callback}
+                                        path={Auth0CallbackPath}
+                                    />
+                                    <Route
+                                        component={NotFound}
+                                        path={NotFoundPath}
+                                    />
+                                    <Route component={NotFound}/>
+                                </Switch>
+                            </AppAuthProvider>
                         </AppThemeProvider>
-                    </PersistGate>
-                </Provider>
-            </AppAuthProvider>
+                    </AppConfigProvider>
+                </PersistGate>
+            </Provider>
         </BrowserRouter>
     );
 };

@@ -5,7 +5,7 @@ import defaultThemeOptions from '../../themes/default';
 import exampleThemeOptions from '../../themes/example';
 import {THEME} from '../../constants';
 
-interface IAppTheme {
+export interface IAppTheme {
     id: string,
     name: string,
     type: string,

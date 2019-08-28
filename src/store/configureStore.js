@@ -7,7 +7,7 @@ import rootReducer from '../reducers';
 import * as R from 'ramda';
 
 const logger = store => next => action => {
-    if (process.env.NODE_ENV === 'development') {
+    if (Boolean(process.env.REACT_APP_DEBUG)) {
         // eslint-disable-next-line no-console
         console.log('dispatching', action);
     }
@@ -15,7 +15,7 @@ const logger = store => next => action => {
     // eslint-disable-next-line prefer-reflect
     const result = R.call(next, action);
 
-    if (process.env.NODE_ENV === 'development') {
+    if (Boolean(process.env.REACT_APP_DEBUG)) {
         // eslint-disable-next-line no-console
         console.log('next state', store.getState());
     }
@@ -28,7 +28,7 @@ const crashReporter = () => next => action => {
         // eslint-disable-next-line prefer-reflect
         return R.call(next, action);
     } catch (err) {
-        if (process.env.NODE_ENV === 'development') {
+        if (Boolean(process.env.REACT_APP_DEBUG)) {
             // eslint-disable-next-line no-console
             console.error('Caught an exception!', err);
             throw err;
@@ -41,7 +41,8 @@ const crashReporter = () => next => action => {
 const persistConfig = {
     key: 'root',
     storage,
-    stateReconciler: autoMergeLevel2
+    stateReconciler: autoMergeLevel2,
+    blacklist: ['config']
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

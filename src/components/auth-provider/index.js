@@ -23,6 +23,13 @@ export const Auth0Provider = ({
     const [auth0Client, setAuth0Client] = useState();
     const [loading, setLoading] = useState(true);
     const [popupOpen, setPopupOpen] = useState(false);
+    const [hasInitOptions, setHasInitOptions] = useState(false);
+
+    useEffect(() => {
+        if (initOptions && initOptions.domain && initOptions.client_id) {
+            setHasInitOptions(true);
+        }
+    }, [initOptions]);
 
     useEffect(() => {
         const initAuth0 = async () => {
@@ -45,9 +52,12 @@ export const Auth0Provider = ({
 
             setLoading(false);
         };
-        initAuth0();
+
+        if (hasInitOptions) {
+            initAuth0();
+        }
         // eslint-disable-next-line
-    }, []);
+    }, [hasInitOptions]);
 
     const loginWithPopup = async (params = {}) => {
         setPopupOpen(true);

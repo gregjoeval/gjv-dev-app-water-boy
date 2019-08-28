@@ -5,6 +5,7 @@ import AppHeader from '../../components/app-header';
 import ScreenLayout from '../../components/screen-layout';
 import ContentLayout from '../../components/content-layout';
 import {useAuth0} from '../../components/auth-provider';
+import {HomePath} from '../home';
 
 const Auth0Callback = (): Component => {
     const {loading, isAuthenticated, getTokenSilently} = useAuth0();
@@ -44,7 +45,7 @@ const Auth0Callback = (): Component => {
                 <Typography variant={'body1'}>
                     <Link
                         component={RouterLink}
-                        to={'/'}
+                        to={HomePath}
                         underline={'hover'}
                     >
                         {'Home'}
@@ -56,3 +57,4 @@ const Auth0Callback = (): Component => {
 };
 
 export default Auth0Callback;
+export const Auth0CallbackPath = '/auth0_callback';

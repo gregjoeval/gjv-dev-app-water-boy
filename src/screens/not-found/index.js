@@ -4,6 +4,7 @@ import {Link, Typography} from '@material-ui/core';
 import AppHeader from '../../components/app-header';
 import ScreenLayout from '../../components/screen-layout';
 import ContentLayout from '../../components/content-layout';
+import {HomePath} from '../home';
 
 const NotFound = (): Component => (
     <ScreenLayout
@@ -22,7 +23,7 @@ const NotFound = (): Component => (
             <Typography variant={'body1'}>
                 <Link
                     component={RouterLink}
-                    to={'/'}
+                    to={HomePath}
                     underline={'hover'}
                 >
                     {'Home'}
@@ -33,3 +34,4 @@ const NotFound = (): Component => (
 );
 
 export default NotFound;
+export const NotFoundPath = '/not-found';

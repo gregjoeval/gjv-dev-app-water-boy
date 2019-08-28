@@ -7,6 +7,7 @@ import ScreenLayout from '../../components/screen-layout';
 import ContentLayout from '../../components/content-layout';
 import {Link as RouterLink} from 'react-router-dom';
 import {useAuth0} from '../../components/auth-provider';
+import {NotFoundPath} from '../not-found';
 
 // eslint-disable-next-line no-unused-vars
 const mapStateToProps = state => ({});
@@ -56,7 +57,7 @@ const Home = ({}: Props): Component => {
                 <Typography variant={'body1'}>
                     <Link
                         component={RouterLink}
-                        to={'/not-found'}
+                        to={NotFoundPath}
                         underline={'hover'}
                     >
                         {'Not Found'}
@@ -68,3 +69,4 @@ const Home = ({}: Props): Component => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export const HomePath = '/home';

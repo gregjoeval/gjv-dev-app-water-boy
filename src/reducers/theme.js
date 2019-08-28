@@ -1,17 +1,11 @@
 import * as R from 'ramda';
 import {THEME_ID__SET, THEME_TYPE__UPDATE, REHYDRATE} from '../constants/actionTypes';
 import AppTheme from '../models/theme';
+import type {IAppTheme} from '../models/theme';
+import Action from '../models/action';
+import type {IAction} from '../models/action';
 
-const initialState = AppTheme.create();
-
-const defaultAction = {type: null, payload: {}};
-
-type Action = {
-    type: string,
-    payload: Object
-}
-
-const theme = (state: AppTheme = initialState, action: Action = defaultAction) => {
+const theme = (state: IAppTheme = AppTheme.create(), action: IAction = Action.create()) => {
     const stateCopy = R.clone(state);
     switch (action.type) {
         case THEME_ID__SET:

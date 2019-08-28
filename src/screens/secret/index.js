@@ -43,6 +43,7 @@ const Secret = ({}: Props): Component => {
             </ContentLayout>
         </ScreenLayout>
     );
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Secret);
+export const SecretPath = '/screen';

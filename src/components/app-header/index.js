@@ -13,7 +13,8 @@ import {ThemeActions} from '../../actions';
 
 const mapStateToProps = state => ({
     id: state.theme.id,
-    type: state.theme.type
+    type: state.theme.type,
+    websiteTitle: state.config.websiteTitle
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -24,10 +25,11 @@ type Props = {
     classes: Object,
     themeActions: {setThemeId: any => void, setLightTheme: any => void, setDarkTheme: any => void},
     id: string,
-    type: string
+    type: string,
+    websiteTitle: string
 };
 
-const AppHeader = ({classes, themeActions, id, type}: Props) => {
+const AppHeader = ({classes, themeActions, id, type, websiteTitle}: Props) => {
     const {setThemeId, setLightTheme, setDarkTheme} = themeActions;
 
     const isLightTheme = type === THEME.LIGHT;
@@ -78,7 +80,7 @@ const AppHeader = ({classes, themeActions, id, type}: Props) => {
             <Typography
                 variant={'h5'}
             >
-                {process.env.REACT_APP_WEBSITE_TITLE}
+                {websiteTitle}
             </Typography>
             <ContentLayout
                 direction={'row'}

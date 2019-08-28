@@ -2,6 +2,8 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import {Auth0Provider} from '../auth-provider';
+import {useSelector} from 'react-redux';
+import {Auth0CallbackPath} from '../../screens/auth0-callback';
 
 type Props = {
     children: Node | Array<Node>,
@@ -9,17 +11,18 @@ type Props = {
 }
 
 const AppAuthProvider = ({children, history}: Props): Component => {
-    const clientId = process.env.REACT_APP__AUTH0__CLIENT_ID;
-    const domain = process.env.REACT_APP__AUTH0__DOMAIN;
+
+    const {clientId, domain, waterBoyApiUri} = useSelector(state => state.config);
 
     const navigate = (route) => (history || {push: () => null}).push(route);
 
     return (
         <Auth0Provider
+            audience={waterBoyApiUri}
             client_id={clientId}
             domain={domain}
             onRedirectCallback={navigate}
-            redirect_uri={`${window.location.origin}/auth0_callback`}
+            redirect_uri={`${window.location.origin}${Auth0CallbackPath}`}
         >
             {children}
         </Auth0Provider>

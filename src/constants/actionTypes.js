@@ -25,6 +25,8 @@
  Note: we have two variations of the end state for this action (SUCCESS/FAIL) so that we can update the application state based on whether we get back an acceptable response or not
  **/
 
+export const REHYDRATE = 'persist/REHYDRATE';
 export const THEME_ID__SET = 'THEME_ID__SET';
 export const THEME_TYPE__UPDATE = 'THEME_TYPE__UPDATE';
-export const REHYDRATE = 'persist/REHYDRATE';
+export const CONFIG__SET = 'CONFIG__SET';
+export const CONFIG__RESET = 'CONFIG__RESET';
