@@ -5,6 +5,17 @@ import createAuth0Client from '@auth0/auth0-spa-js';
 const DEFAULT_REDIRECT_CALLBACK = () =>
     window.history.replaceState({}, document.title, window.location.pathname);
 
+const DEFAULT_AUTH0_CLIENT = {
+    loginWithPopup: () => {},
+    getUser: () => {},
+    handleRedirectCallback: () => {},
+    getIdTokenClaims: () => {},
+    loginWithRedirect: () => {},
+    getTokenSilently: () => {},
+    getTokenWithPopup: () => {},
+    logout: () => {}
+};
+
 export const Auth0Context = React.createContext();
 export const useAuth0 = () => useContext(Auth0Context);
 
@@ -20,7 +31,7 @@ export const Auth0Provider = ({
 }: Auth0ProviderProps) => {
     const [isAuthenticated, setIsAuthenticated] = useState();
     const [user, setUser] = useState();
-    const [auth0Client, setAuth0Client] = useState();
+    const [auth0Client, setAuth0Client] = useState(DEFAULT_AUTH0_CLIENT);
     const [loading, setLoading] = useState(true);
     const [popupOpen, setPopupOpen] = useState(false);
     const [hasInitOptions, setHasInitOptions] = useState(false);
@@ -91,11 +102,11 @@ export const Auth0Provider = ({
                 popupOpen,
                 loginWithPopup,
                 handleRedirectCallback,
-                getIdTokenClaims: (...p) => auth0Client.getIdTokenClaims(...p),
-                loginWithRedirect: (...p) => auth0Client.loginWithRedirect(...p),
-                getTokenSilently: (...p) => auth0Client.getTokenSilently(...p),
-                getTokenWithPopup: (...p) => auth0Client.getTokenWithPopup(...p),
-                logout: (...p) => auth0Client.logout(...p)
+                getIdTokenClaims: ({...p}) => auth0Client.getIdTokenClaims({...p}),
+                loginWithRedirect: ({...p}) => auth0Client.loginWithRedirect({...p}),
+                getTokenSilently: ({...p}) => auth0Client.getTokenSilently({...p}),
+                getTokenWithPopup: ({...p}) => auth0Client.getTokenWithPopup({...p}),
+                logout: ({...p}) => auth0Client.logout({...p})
             }}
         >
             {children}

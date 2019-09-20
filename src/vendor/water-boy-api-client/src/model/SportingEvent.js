@@ -22,13 +22,12 @@ class SportingEvent {
     /**
      * Constructs a new <code>SportingEvent</code>.
      * @alias module:model/SportingEvent
-     * @param _date {String} 
-     * @param time {String} 
+     * @param dateTime {String} 
      * @param location {String} 
      */
-    constructor(_date, time, location) { 
+    constructor(dateTime, location) { 
         
-        SportingEvent.initialize(this, _date, time, location);
+        SportingEvent.initialize(this, dateTime, location);
     }
 
     /**
@@ -36,9 +35,8 @@ class SportingEvent {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, _date, time, location) { 
-        obj['date'] = _date;
-        obj['time'] = time;
+    static initialize(obj, dateTime, location) { 
+        obj['dateTime'] = dateTime;
         obj['location'] = location;
     }
 
@@ -56,11 +54,8 @@ class SportingEvent {
             if (data.hasOwnProperty('id')) {
                 obj['id'] = ApiClient.convertToType(data['id'], 'String');
             }
-            if (data.hasOwnProperty('date')) {
-                obj['date'] = ApiClient.convertToType(data['date'], 'String');
-            }
-            if (data.hasOwnProperty('time')) {
-                obj['time'] = ApiClient.convertToType(data['time'], 'String');
+            if (data.hasOwnProperty('dateTime')) {
+                obj['dateTime'] = ApiClient.convertToType(data['dateTime'], 'String');
             }
             if (data.hasOwnProperty('location')) {
                 obj['location'] = ApiClient.convertToType(data['location'], 'String');
@@ -96,14 +91,9 @@ class SportingEvent {
 SportingEvent.prototype['id'] = undefined;
 
 /**
- * @member {String} date
+ * @member {String} dateTime
  */
-SportingEvent.prototype['date'] = undefined;
-
-/**
- * @member {String} time
- */
-SportingEvent.prototype['time'] = undefined;
+SportingEvent.prototype['dateTime'] = undefined;
 
 /**
  * @member {String} location

@@ -2,22 +2,34 @@
 import React from 'react';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
-import {Switch, Route, BrowserRouter} from 'react-router-dom';
-
+import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom';
+import * as R from 'ramda';
 // Our Dependencies
 import configureStore from './store/configureStore';
 import AppConfigProvider from './components/app-config-provider';
 import AppThemeProvider from './components/app-theme-provider';
 import AppAuthProvider from './components/app-auth-provider';
 import PrivateRoute from './components/private-route';
-
+import createScreen from './models/screen';
 // Screens
-import Home, {HomePath} from './screens/home';
-import NotFound, {NotFoundPath} from './screens/not-found';
-import Auth0Callback, {Auth0CallbackPath} from './screens/auth0-callback';
-import Secret, {SecretPath} from './screens/secret';
+import {allScreens} from './screens';
+import NotFound from './screens/not-found';
 
 const preloadedState = {};
+
+const getRoutes = (screens) => R.reduce((acc, item) => {
+    const screenModel = createScreen(item);
+    const {Component, Path, hasAuth, Name} = screenModel;
+    const props = {
+        component: Component,
+        key: Name,
+        path: Path
+    };
+    const route = Boolean(hasAuth)
+        ? <PrivateRoute {...props}/>
+        : <Route {...props}/>;
+    return R.append(route, acc);
+}, [], R.values(screens));
 
 const App = () => {
     const {store, persistor} = configureStore(preloadedState);
@@ -33,27 +45,12 @@ const App = () => {
                         <AppThemeProvider>
                             <AppAuthProvider>
                                 <Switch>
-                                    <Route
-                                        component={Home}
+                                    <Redirect
                                         exact={true}
-                                        path={'/'}
+                                        from={'/'}
+                                        to={'/home'}
                                     />
-                                    <Route
-                                        component={Home}
-                                        path={HomePath}
-                                    />
-                                    <PrivateRoute
-                                        component={Secret}
-                                        path={SecretPath}
-                                    />
-                                    <Route
-                                        component={Auth0Callback}
-                                        path={Auth0CallbackPath}
-                                    />
-                                    <Route
-                                        component={NotFound}
-                                        path={NotFoundPath}
-                                    />
+                                    {getRoutes(allScreens)}
                                     <Route component={NotFound}/>
                                 </Switch>
                             </AppAuthProvider>

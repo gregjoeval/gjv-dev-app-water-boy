@@ -2,7 +2,7 @@
 import React, {Component, Fragment, useEffect, useCallback, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import AppConfig from '../../models/config';
-import {setConfig} from '../../actions/config';
+import {ConfigActions} from '../../actions';
 
 type Props = {
     children: Node | Array<Node>,
@@ -13,7 +13,7 @@ const AppConfigProvider = ({children}: Props): Component => {
     const [hasConfig, setHasConfig] = useState(false);
     const dispatch = useDispatch();
     const setConfigAction = useCallback(
-        (payload) => dispatch(setConfig(payload)),
+        (payload) => dispatch(ConfigActions.setConfig(payload)),
         [dispatch]
     );
 

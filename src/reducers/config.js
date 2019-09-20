@@ -5,7 +5,7 @@ import type {IAppConfig} from '../models/config';
 import Action from '../models/action';
 import type {IAction} from '../models/action';
 
-const config = (state: IAppConfig = AppConfig.create(), action: IAction = Action.create()) => {
+const config = (state: IAppConfig = {}, action: IAction = Action.create()) => {
     const stateCopy = R.clone(state);
     switch (action.type) {
         case CONFIG__SET:

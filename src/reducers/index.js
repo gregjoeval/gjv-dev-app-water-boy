@@ -1,10 +1,14 @@
 import {combineReducers} from 'redux';
 import theme from './theme';
 import config from './config';
+import sportingEvents from './sportingEvents';
+import fullstrideGames from './fullstrideGames';
 
 const rootReducer = combineReducers({
     theme,
-    config
+    config,
+    sportingEvents,
+    fullstrideGames
 });
 
 export default rootReducer;

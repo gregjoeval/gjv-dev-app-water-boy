@@ -1,26 +1,27 @@
 // @flow
-import React, {Component} from 'react';
+import React, {Component, useEffect} from 'react';
 import {Typography, Link, Button} from '@material-ui/core';
-import {connect} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import AppHeader from '../../components/app-header';
 import ScreenLayout from '../../components/screen-layout';
 import ContentLayout from '../../components/content-layout';
 import {Link as RouterLink} from 'react-router-dom';
 import {useAuth0} from '../../components/auth-provider';
-import {NotFoundPath} from '../not-found';
+import {fetchSportingEventsAsync} from '../../actions/sporting-events';
+import {Home as Icon} from '@material-ui/icons';
+import createScreen from '../../models/screen';
+import {NotFoundName, NotFoundPath} from '../not-found';
 
-// eslint-disable-next-line no-unused-vars
-const mapStateToProps = state => ({});
-
-// eslint-disable-next-line no-unused-vars
-const mapDispatchToProps = dispatch => ({});
-
-type Props = {};
-
-// TODO: remove next line and actually utilize state variables
-// eslint-disable-next-line no-empty-pattern
-const Home = ({}: Props): Component => {
+const Home = (): Component => {
+    const sportingEvents = useSelector(state => state.sportingEvents);
+    const dispatch = useDispatch();
     const {isAuthenticated, loginWithRedirect, logout} = useAuth0();
+
+    useEffect(() => {
+        dispatch(fetchSportingEventsAsync());
+    }, [dispatch]);
+
+    console.log(sportingEvents);
 
     return (
         <ScreenLayout
@@ -38,6 +39,9 @@ const Home = ({}: Props): Component => {
                 </Typography>
                 <Typography variant={'body1'}>
                     {'Content goes here.'}
+                </Typography>
+                <Typography variant={'body1'}>
+                    {`loading: ${sportingEvents.loading}`}
                 </Typography>
                 <Typography variant={'body1'}>
                     {`isAuthenticated: ${isAuthenticated}`}
@@ -60,7 +64,7 @@ const Home = ({}: Props): Component => {
                         to={NotFoundPath}
                         underline={'hover'}
                     >
-                        {'Not Found'}
+                        {NotFoundName}
                     </Link>
                 </Typography>
             </ContentLayout>
@@ -68,5 +72,8 @@ const Home = ({}: Props): Component => {
     );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
 export const HomePath = '/home';
+export const HomeName = 'Home';
+export const HomeIcon = Icon;
+export const HomeScreen = createScreen({Component: Home, Path: HomePath, Name: HomeName, Icon: HomeIcon});
+export default Home;

@@ -33,9 +33,9 @@ const Header = (
         wrap = 'wrap',
         xs = 12,
         sm = 12,
-        md = 9,
-        lg = 7,
-        xl = 5
+        md = 12,
+        lg = 10,
+        xl = 8
     }: Props
 ): Component => (
     <AppBar

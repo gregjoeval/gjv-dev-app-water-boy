@@ -50,11 +50,8 @@ class SportingeventsFields {
             if (data.hasOwnProperty('id')) {
                 obj['id'] = ApiClient.convertToType(data['id'], 'Boolean');
             }
-            if (data.hasOwnProperty('date')) {
-                obj['date'] = ApiClient.convertToType(data['date'], 'Boolean');
-            }
-            if (data.hasOwnProperty('time')) {
-                obj['time'] = ApiClient.convertToType(data['time'], 'Boolean');
+            if (data.hasOwnProperty('dateTime')) {
+                obj['dateTime'] = ApiClient.convertToType(data['dateTime'], 'Boolean');
             }
             if (data.hasOwnProperty('location')) {
                 obj['location'] = ApiClient.convertToType(data['location'], 'Boolean');
@@ -90,14 +87,9 @@ class SportingeventsFields {
 SportingeventsFields.prototype['id'] = undefined;
 
 /**
- * @member {Boolean} date
+ * @member {Boolean} dateTime
  */
-SportingeventsFields.prototype['date'] = undefined;
-
-/**
- * @member {Boolean} time
- */
-SportingeventsFields.prototype['time'] = undefined;
+SportingeventsFields.prototype['dateTime'] = undefined;
 
 /**
  * @member {Boolean} location

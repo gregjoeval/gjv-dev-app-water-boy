@@ -1,15 +1,18 @@
-import React, {useState} from 'react';
+import React, {Fragment, useState} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {IconButton, Typography, Menu, MenuItem, Tooltip} from '@material-ui/core';
-import {withStyles} from '@material-ui/styles';
-import {Brightness2 as DarkThemeIcon, Brightness6 as LightThemeIcon, Palette as PaletteIcon} from '@material-ui/icons';
+import {IconButton, Typography, Tooltip} from '@material-ui/core';
+import {Brightness2 as DarkThemeIcon, Brightness6 as LightThemeIcon, Palette as PaletteIcon, Menu as MenuIcon} from '@material-ui/icons';
 import {GithubCircle as GithubIcon} from 'mdi-material-ui';
 import {THEME} from '../../constants';
-import Themes from '../../themes';
 import Header from '../../components/header';
 import ContentLayout from '../../components/content-layout';
 import {ThemeActions} from '../../actions';
+import ThemeMenu from '../theme-menu';
+import SideBarMenu from '../side-bar-menu';
+import {AccountCircle as AccountCircleIcon} from '@material-ui/icons';
+import {AccountName, AccountPath} from '../../screens/account';
+import {Link as RouterLink} from 'react-router-dom';
 
 const mapStateToProps = state => ({
     id: state.theme.id,
@@ -22,20 +25,23 @@ const mapDispatchToProps = dispatch => ({
 });
 
 type Props = {
-    classes: Object,
     themeActions: {setThemeId: any => void, setLightTheme: any => void, setDarkTheme: any => void},
     id: string,
     type: string,
     websiteTitle: string
 };
 
-const AppHeader = ({classes, themeActions, id, type, websiteTitle}: Props) => {
+const AppHeader = ({themeActions, id, type, websiteTitle}: Props) => {
     const {setThemeId, setLightTheme, setDarkTheme} = themeActions;
 
     const isLightTheme = type === THEME.LIGHT;
     const toggleThemeType = isLightTheme ? setDarkTheme : setLightTheme;
 
+    const [isSideBarOpen, setIsSideBarOpen] = useState(false);
     const [themeMenuAnchorEl, setThemeMenuAnchorEl] = useState(null);
+
+    const openSideBar = () => setIsSideBarOpen(true);
+    const closeSideBar = () => setIsSideBarOpen(false);
 
     const themeMenuId = 'theme-menu-id';
     const openThemeMenu = (e) => setThemeMenuAnchorEl(e.currentTarget);
@@ -48,28 +54,20 @@ const AppHeader = ({classes, themeActions, id, type, websiteTitle}: Props) => {
         closeThemeMenu();
     };
 
-    const ThemeMenu = () => (
-        <Menu
-            anchorEl={themeMenuAnchorEl}
-            id={themeMenuId}
-            keepMounted={true}
-            onClose={closeThemeMenu}
-            open={Boolean(themeMenuAnchorEl)}
-        >
-            {
-                (Themes || []).map((theme, index) => (
-                    <MenuItem
-                        button={true}
-                        className={classes.menuItem}
-                        component={'li'}
-                        key={index}
-                        onClick={handleThemeMenuClick(theme.id)}
-                    >
-                        {theme.name}
-                    </MenuItem>
-                ))
-            }
-        </Menu>
+    const SideBar = () => (
+        <Fragment>
+            <IconButton
+                color={'inherit'}
+                href={null}
+                onClick={openSideBar}
+            >
+                <MenuIcon/>
+            </IconButton>
+            <SideBarMenu
+                isOpen={isSideBarOpen}
+                onClose={closeSideBar}
+            />
+        </Fragment>
     );
 
     return (
@@ -77,12 +75,19 @@ const AppHeader = ({classes, themeActions, id, type, websiteTitle}: Props) => {
             alignItems={'center'}
             justify={'space-between'}
         >
-            <Typography
-                variant={'h5'}
-            >
-                {websiteTitle}
-            </Typography>
             <ContentLayout
+                alignItems={'center'}
+                direction={'row'}
+            >
+                <SideBar/>
+                <Typography
+                    variant={'h5'}
+                >
+                    {websiteTitle}
+                </Typography>
+            </ContentLayout>
+            <ContentLayout
+                alignItems={'center'}
                 direction={'row'}
             >
                 <Tooltip title={'Toggle light/dark theme'}>
@@ -109,7 +114,12 @@ const AppHeader = ({classes, themeActions, id, type, websiteTitle}: Props) => {
                         <PaletteIcon/>
                     </IconButton>
                 </Tooltip>
-                <ThemeMenu/>
+                <ThemeMenu
+                    anchorElement={themeMenuAnchorEl}
+                    id={themeMenuId}
+                    onClick={handleThemeMenuClick}
+                    onClose={closeThemeMenu}
+                />
                 <Tooltip title={'Github Repository'}>
                     <IconButton
                         color={'inherit'}
@@ -119,15 +129,18 @@ const AppHeader = ({classes, themeActions, id, type, websiteTitle}: Props) => {
                         <GithubIcon/>
                     </IconButton>
                 </Tooltip>
+                <Tooltip title={AccountName}>
+                    <IconButton
+                        color={'inherit'}
+                        component={RouterLink}
+                        to={AccountPath}
+                    >
+                        <AccountCircleIcon/>
+                    </IconButton>
+                </Tooltip>
             </ContentLayout>
         </Header>
     );
 };
 
-const styles = () => ({
-    menuItem: {
-        textTransform: 'capitalize'
-    }
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(AppHeader));
+export default connect(mapStateToProps, mapDispatchToProps)(AppHeader);

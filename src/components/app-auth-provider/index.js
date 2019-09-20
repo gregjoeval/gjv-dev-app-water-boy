@@ -3,7 +3,6 @@ import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import {Auth0Provider} from '../auth-provider';
 import {useSelector} from 'react-redux';
-import {Auth0CallbackPath} from '../../screens/auth0-callback';
 
 type Props = {
     children: Node | Array<Node>,
@@ -22,7 +21,7 @@ const AppAuthProvider = ({children, history}: Props): Component => {
             client_id={clientId}
             domain={domain}
             onRedirectCallback={navigate}
-            redirect_uri={`${window.location.origin}${Auth0CallbackPath}`}
+            redirect_uri={`${window.location.origin}/auth0_callback`}
         >
             {children}
         </Auth0Provider>

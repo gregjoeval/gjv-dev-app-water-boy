@@ -1,20 +1,17 @@
 // @flow
 import React, {Component} from 'react';
-import {Typography, Button} from '@material-ui/core';
-import {connect} from 'react-redux';
+import {Typography, Button, Avatar} from '@material-ui/core';
 import AppHeader from '../../components/app-header';
 import ScreenLayout from '../../components/screen-layout';
 import ContentLayout from '../../components/content-layout';
 import {useAuth0} from '../../components/auth-provider';
+import {AccountCircle as AccountCircleIcon} from '@material-ui/icons';
+import createScreen from '../../models/screen';
+import User from '../../models/user';
 
-const mapStateToProps = state => ({});
-
-const mapDispatchToProps = dispatch => ({});
-
-type Props = {};
-
-const Secret = ({}: Props): Component => {
+const Account = (): Component => {
     const {user, logout} = useAuth0();
+    const userModel = User.create(user);
     return (
         <ScreenLayout
             header={<AppHeader/>}
@@ -24,7 +21,7 @@ const Secret = ({}: Props): Component => {
                 spacing={24}
             >
                 <Typography variant={'h5'}>
-                    {'Secret'}
+                    {AccountName}
                 </Typography>
                 <Button
                     onClick={() => logout({})}
@@ -32,18 +29,28 @@ const Secret = ({}: Props): Component => {
                     {'logout'}
                 </Button>
                 <Typography variant={'body1'}>
-                    {'This is the secret page.'}
+                    {userModel.name}
                 </Typography>
                 <Typography variant={'body1'}>
-                    {'Secrets go here.'}
+                    {userModel.email}
                 </Typography>
                 <Typography variant={'body1'}>
-                    {JSON.stringify(user)}
+                    {userModel.nickname}
+                </Typography>
+                <Avatar
+                    alt={'account'}
+                    src={userModel.picture}
+                />
+                <Typography variant={'body1'}>
+                    {userModel.sub}
                 </Typography>
             </ContentLayout>
         </ScreenLayout>
     );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Secret);
-export const SecretPath = '/screen';
+export const AccountPath = '/account';
+export const AccountName = 'Account';
+export const AccountIcon = AccountCircleIcon;
+export const AccountScreen = createScreen({Component: Account, Path: AccountPath, Name: AccountName, Icon: AccountIcon, hasAuth: true});
+export default Account;
