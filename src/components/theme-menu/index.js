@@ -2,6 +2,7 @@ import {Menu, MenuItem} from '@material-ui/core';
 import Themes from '../../themes';
 import React from 'react';
 import {makeStyles} from '@material-ui/styles';
+import {useSelector} from 'react-redux';
 
 const useStyles = makeStyles({
     menuItem: {
@@ -17,6 +18,7 @@ type ThemeMenuProps = {
 };
 
 const ThemeMenu = ({anchorElement, id, onClose, onClick}: ThemeMenuProps) => {
+    const currentThemeId = useSelector(state => state.theme.id);
     const classes = useStyles();
     return (
         <Menu
@@ -33,6 +35,7 @@ const ThemeMenu = ({anchorElement, id, onClose, onClick}: ThemeMenuProps) => {
                     component={'li'}
                     key={index}
                     onClick={onClick(theme.id)}
+                    selected={currentThemeId === theme.id}
                 >
                     {theme.name}
                 </MenuItem>

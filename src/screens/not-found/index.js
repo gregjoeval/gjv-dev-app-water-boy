@@ -6,7 +6,7 @@ import AppHeader from '../../components/app-header';
 import ScreenLayout from '../../components/screen-layout';
 import ContentLayout from '../../components/content-layout';
 import createScreen from '../../models/screen';
-import {HomePath} from '../home';
+import {HomeName, HomePath} from '../home';
 
 const NotFound = (): Component => (
     <ScreenLayout
@@ -28,7 +28,7 @@ const NotFound = (): Component => (
                     to={HomePath}
                     underline={'hover'}
                 >
-                    {'Home'}
+                    {HomeName}
                 </Link>
             </Typography>
         </ContentLayout>

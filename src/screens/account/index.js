@@ -1,6 +1,6 @@
 // @flow
 import React, {Component} from 'react';
-import {Typography, Button, Avatar} from '@material-ui/core';
+import {Typography, Avatar} from '@material-ui/core';
 import AppHeader from '../../components/app-header';
 import ScreenLayout from '../../components/screen-layout';
 import ContentLayout from '../../components/content-layout';
@@ -10,7 +10,7 @@ import createScreen from '../../models/screen';
 import User from '../../models/user';
 
 const Account = (): Component => {
-    const {user, logout} = useAuth0();
+    const {user} = useAuth0();
     const userModel = User.create(user);
     return (
         <ScreenLayout
@@ -23,26 +23,23 @@ const Account = (): Component => {
                 <Typography variant={'h5'}>
                     {AccountName}
                 </Typography>
-                <Button
-                    onClick={() => logout({})}
-                >
-                    {'logout'}
-                </Button>
+                <ContentLayout alignItems={'center'}>
+                    <Avatar
+                        alt={'account'}
+                        src={userModel.picture}
+                    />
+                </ContentLayout>
                 <Typography variant={'body1'}>
-                    {userModel.name}
+                    {`Name: ${userModel.name}`}
                 </Typography>
                 <Typography variant={'body1'}>
-                    {userModel.email}
+                    {`Email: ${userModel.email}`}
                 </Typography>
                 <Typography variant={'body1'}>
-                    {userModel.nickname}
+                    {`Nickname: ${userModel.nickname}`}
                 </Typography>
-                <Avatar
-                    alt={'account'}
-                    src={userModel.picture}
-                />
                 <Typography variant={'body1'}>
-                    {userModel.sub}
+                    {`Sub: ${userModel.sub}`}
                 </Typography>
             </ContentLayout>
         </ScreenLayout>

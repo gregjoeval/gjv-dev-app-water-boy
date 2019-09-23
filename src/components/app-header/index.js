@@ -1,18 +1,17 @@
 import React, {Fragment, useState} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {IconButton, Typography, Tooltip} from '@material-ui/core';
+import {IconButton, Link, Tooltip} from '@material-ui/core';
 import {Brightness2 as DarkThemeIcon, Brightness6 as LightThemeIcon, Palette as PaletteIcon, Menu as MenuIcon} from '@material-ui/icons';
-import {GithubCircle as GithubIcon} from 'mdi-material-ui';
 import {THEME} from '../../constants';
 import Header from '../../components/header';
 import ContentLayout from '../../components/content-layout';
 import {ThemeActions} from '../../actions';
 import ThemeMenu from '../theme-menu';
 import SideBarMenu from '../side-bar-menu';
-import {AccountCircle as AccountCircleIcon} from '@material-ui/icons';
-import {AccountName, AccountPath} from '../../screens/account';
 import {Link as RouterLink} from 'react-router-dom';
+import {HomePath} from '../../screens/home';
+import AccountMenu from '../account-menu';
 
 const mapStateToProps = state => ({
     id: state.theme.id,
@@ -39,9 +38,14 @@ const AppHeader = ({themeActions, id, type, websiteTitle}: Props) => {
 
     const [isSideBarOpen, setIsSideBarOpen] = useState(false);
     const [themeMenuAnchorEl, setThemeMenuAnchorEl] = useState(null);
+    const [accountMenuAnchorEl, setAccountMenuAnchorEl] = useState(null);
 
     const openSideBar = () => setIsSideBarOpen(true);
     const closeSideBar = () => setIsSideBarOpen(false);
+
+    const accountMenuId = 'theme-menu-id';
+    const openAccountMenu = (e) => setAccountMenuAnchorEl(e.currentTarget);
+    const closeAccountMenu = () => setAccountMenuAnchorEl(null);
 
     const themeMenuId = 'theme-menu-id';
     const openThemeMenu = (e) => setThemeMenuAnchorEl(e.currentTarget);
@@ -80,11 +84,14 @@ const AppHeader = ({themeActions, id, type, websiteTitle}: Props) => {
                 direction={'row'}
             >
                 <SideBar/>
-                <Typography
+                <Link
+                    color={'inherit'}
+                    component={RouterLink}
+                    to={HomePath}
                     variant={'h5'}
                 >
                     {websiteTitle}
-                </Typography>
+                </Link>
             </ContentLayout>
             <ContentLayout
                 alignItems={'center'}
@@ -120,24 +127,12 @@ const AppHeader = ({themeActions, id, type, websiteTitle}: Props) => {
                     onClick={handleThemeMenuClick}
                     onClose={closeThemeMenu}
                 />
-                <Tooltip title={'Github Repository'}>
-                    <IconButton
-                        color={'inherit'}
-                        href={'https://github.com/gregjoeval/example-cra-app'}
-                        target={'_blank'}
-                    >
-                        <GithubIcon/>
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title={AccountName}>
-                    <IconButton
-                        color={'inherit'}
-                        component={RouterLink}
-                        to={AccountPath}
-                    >
-                        <AccountCircleIcon/>
-                    </IconButton>
-                </Tooltip>
+                <AccountMenu
+                    anchorElement={accountMenuAnchorEl}
+                    id={accountMenuId}
+                    onClose={closeAccountMenu}
+                    onOpen={openAccountMenu}
+                />
             </ContentLayout>
         </Header>
     );
