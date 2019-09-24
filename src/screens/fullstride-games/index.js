@@ -11,8 +11,17 @@ import * as R from 'ramda';
 import FullstrideGame from '../../models/fullstride-game';
 import createScreen from '../../models/screen';
 import EventCard from '../../components/event-card';
+import {makeStyles} from '@material-ui/styles';
+
+const useStyles = makeStyles(() => ({
+    listContainer: {
+        marginLeft: 'auto',
+        marginRight: 'auto'
+    }
+}));
 
 const FullstrideGames = (): Component => {
+    const classes = useStyles();
     const {loading, data, error} = useSelector(state => state.fullstrideGames);
     const dispatch = useDispatch();
     const [shouldFetch, setShouldFetch] = useState(true);
@@ -70,9 +79,14 @@ const FullstrideGames = (): Component => {
                         ? <CircularProgress/>
                         : (
                             <ContentLayout
+                                containerClassName={classes.listContainer}
                                 direction={'row'}
+                                justify={'center'}
+                                md={'auto'}
+                                sm={6}
                                 spacing={1}
                                 wrap={'wrap'}
+                                xs={12}
                             >
                                 {list}
                             </ContentLayout>

@@ -8,35 +8,30 @@ import Grid, {
     GridJustification,
     GridWrap
 } from '@material-ui/core/Grid';
-import {withStyles} from '@material-ui/styles';
+import {makeStyles} from '@material-ui/styles';
+
+const useStyles = makeStyles(theme => ({
+    breakpointSpacing: {
+        marginBottom: 0,
+        [theme.breakpoints.up('sm')]: {
+            marginBottom: theme.spacing(1)
+        },
+        [theme.breakpoints.up('md')]: {
+            marginBottom: theme.spacing(2)
+        },
+        [theme.breakpoints.up('lg')]: {
+            marginBottom: theme.spacing(2.5)
+        },
+        [theme.breakpoints.up('xl')]: {
+            marginBottom: theme.spacing(3)
+        }
+    }
+}));
 
 /**
  * https://www.w3schools.com/cssref/pr_text_text-align.asp
  */
 export type TextAlign = 'left' | 'right' | 'center' | 'justify' | 'initial' | 'inherit';
-
-const handleSpacing = input => {
-    switch (input) {
-        case 0:
-        default:
-            return 0;
-        case 1:
-        case 8:
-            return 1;
-        case 2:
-        case 16:
-            return 2;
-        case 3:
-        case 24:
-            return 3;
-        case 4:
-        case 32:
-            return 4;
-        case 5:
-        case 40:
-            return 5;
-    }
-};
 
 const waterfallValues = (defaultValue, valueArray = []) => {
     const len = valueArray.length;
@@ -50,12 +45,12 @@ const waterfallValues = (defaultValue, valueArray = []) => {
     return [];
 };
 
-type Props = {
+type ContentLayoutProps = {
     alignContent?: GridContentAlignment,
     alignItems?: GridItemsAlignment,
     children: Array<Node> | Node,
-    classes?: Object,
     className?: string,
+    containerClassName?: string,
     direction?: GridDirection,
     enableBreakpointSpacing?: boolean,
     justify?: GridJustification,
@@ -82,8 +77,8 @@ type Props = {
  * @param {GridContentAlignment} alignContent - defines alignment for item lines within the container
  * @param {GridItemsAlignment} alignItems - defines alignment perpendicular to the main axis
  * @param {Array<Node> | Node} children - element(s), component(s)
- * @param {Object} classes - jss classes
  * @param {string} className - jss class on each item
+ * @param {string} containerClassName - jss class on the container
  * @param {GridDirection} direction - the main axis; direction in which items will flow in a container
  * @param {boolean} enableBreakpointSpacing - if true, margins between items will scale with screen size
  * @param {GridJustification} justify - defines alignment along the main axis
@@ -103,8 +98,8 @@ const ContentLayout = (
         alignContent = 'flex-start',
         alignItems = 'stretch',
         children,
-        classes,
         className,
+        containerClassName,
         direction = 'column',
         enableBreakpointSpacing = false,
         justify = 'flex-start',
@@ -116,19 +111,20 @@ const ContentLayout = (
         md,
         lg,
         xl
-    }: Props
+    }: ContentLayoutProps
 ): Component => {
-    const spacingProp = handleSpacing(spacing);
+    const classes = useStyles();
     const x = waterfallValues('auto', [xs, sm, md, lg, xl]);
     const [xsVal, smVal, mdVal, lgVal, xlVal] = x;
     return (
         <Grid
             alignContent={alignContent}
             alignItems={alignItems}
+            className={`${Boolean(containerClassName) ? containerClassName : ''}`}
             container={true}
             direction={direction}
             justify={justify}
-            spacing={spacingProp}
+            spacing={spacing}
             wrap={wrap}
         >
             {[].concat(children).map((child, index) => (
@@ -152,22 +148,4 @@ const ContentLayout = (
     );
 };
 
-const styles = (theme) => ({
-    breakpointSpacing: {
-        marginBottom: 0,
-        [theme.breakpoints.up('sm')]: {
-            marginBottom: theme.spacing(1)
-        },
-        [theme.breakpoints.up('md')]: {
-            marginBottom: theme.spacing(2)
-        },
-        [theme.breakpoints.up('lg')]: {
-            marginBottom: theme.spacing(2.5)
-        },
-        [theme.breakpoints.up('xl')]: {
-            marginBottom: theme.spacing(3)
-        }
-    }
-});
-
-export default withStyles(styles)(ContentLayout);
+export default ContentLayout;

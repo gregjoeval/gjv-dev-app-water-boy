@@ -29,7 +29,7 @@ const Header = (
         classes,
         direction = 'row',
         justify,
-        spacing = 8,
+        spacing = 1,
         wrap = 'wrap',
         xs = 12,
         sm = 12,

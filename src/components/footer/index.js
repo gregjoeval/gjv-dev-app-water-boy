@@ -29,7 +29,7 @@ const Footer = (
         classes,
         direction = 'row',
         justify = 'space-around',
-        spacing = 8,
+        spacing = 1,
         wrap = 'wrap',
         xs = 12,
         sm = 12,

@@ -36,10 +36,10 @@ const ScreenLayout = ({children, classes, footer, header}: Props): Component => 
             <main className={`${classes.main} ${hasHeader(header) || hasFooter(footer) ? classes.hasHeaderOrFooter : ''}`}>
                 <div className={classes.screenPadding}>
                     <SectionLayout
-                        lg={7}
-                        md={9}
+                        lg={8}
+                        md={10}
                         sm={11}
-                        xl={5}
+                        xl={7}
                         xs={12}
                     >
                         {children}

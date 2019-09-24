@@ -26,7 +26,7 @@ const sportingEvents = (state: IDataSourceStore = initialState, action: IAction 
         case SPORTING_EVENTS__RESET:
             return DataSourceStore.create(initialState);
         case SPORTING_EVENTS__UPDATE:
-            const data = R.mergeDeepRight(stateCopy, action.payload);
+            const data = R.mergeDeepRight(stateCopy.data, action.payload);
             return DataSourceStore.create({loading: false, error: null, data});
         case SPORTING_EVENTS__FETCH__REQUEST:
             return DataSourceStore.create({loading: true, error: null, data: stateCopy.data});
