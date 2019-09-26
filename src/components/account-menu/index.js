@@ -65,7 +65,7 @@ const AccountMenu = ({anchorElement, id, onClose, onOpen}: AccountMenuProps) => 
         )
         : (
             <Button
-                href={null}
+                color={'inherit'}
                 onClick={() => loginWithRedirect({})}
             >
                 {'login'}
