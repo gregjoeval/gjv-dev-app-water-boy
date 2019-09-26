@@ -1,5 +1,6 @@
-import {withDataSource} from '../libs/dataSourceHigherOrderReducer';
+import {makeReducer} from '../libs/makeReducer';
+import DataSourceStore from '../models/data-source-store';
 
-const [_reducer, _actionTypes] = withDataSource('FULLSTRIDE_GAMES', {});
+const [reducer, actionTypes] = makeReducer('FULLSTRIDE_GAMES', DataSourceStore.create);
 
-export {_reducer as reducer, _actionTypes as actionTypes};
+export {reducer, actionTypes};

@@ -32,7 +32,7 @@ export const updateFullstrideGames = (sportingEvents) => {
  * @return {{payload: *, type: string}} - action
  */
 export const fetchFullstrideGamesAsync = () => async dispatch => {
-    dispatch(Action.create(actionTypes.FETCH__REQUEST));
+    dispatch(Action.create(actionTypes.REQUEST));
 
     try {
         const client = new WaterBoyApi.ApiClient();
@@ -40,8 +40,8 @@ export const fetchFullstrideGamesAsync = () => async dispatch => {
         const apiModels = await service.fullstrideGameControllerFind();
         const fullstrideGames = (apiModels || []).map(model => FullstrideGame.create(model));
         const payload = createDictionaryFromList(fullstrideGames);
-        dispatch(Action.create(actionTypes.FETCH__SUCCESS, payload));
+        dispatch(Action.create(actionTypes.SET, payload));
     } catch (e) {
-        dispatch(Action.create(actionTypes.FETCH__FAIL, 'Failed to fetch'));
+        dispatch(Action.create(actionTypes.FAIL, 'Failed to fetch'));
     }
 };
