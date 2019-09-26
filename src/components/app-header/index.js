@@ -90,7 +90,7 @@ const AppHeader = ({themeActions, id, type, websiteTitle}: Props) => {
                     to={HomePath}
                     variant={'h5'}
                 >
-                    {websiteTitle}
+                    {websiteTitle || ''}
                 </Link>
             </ContentLayout>
             <ContentLayout
