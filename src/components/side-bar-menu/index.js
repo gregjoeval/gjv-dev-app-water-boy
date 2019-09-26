@@ -63,7 +63,7 @@ const SideBarMenu = ({onClose, isOpen, location}: SideBarMenuProps) => {
                 <ListItem
                     button={true}
                     component={'a'}
-                    href={'https://github.com/gregjoeval/example-cra-app'}
+                    href={'https://github.com/gregjoeval/gjv-dev-app-water-boy'}
                     target={'_blank'}
                 >
                     <ListItemIcon>
