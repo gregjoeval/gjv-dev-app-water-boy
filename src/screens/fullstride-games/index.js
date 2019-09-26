@@ -33,7 +33,7 @@ const FullstrideGames = (): Component => {
         }
     }, [dispatch, shouldFetch]);
 
-    const x = Object.values(data);
+    const x = R.values(data);
     const list = R.reduce((acc, item) => {
         const game = FullstrideGame.create(item);
         const element = (
@@ -56,7 +56,7 @@ const FullstrideGames = (): Component => {
         >
             <ContentLayout
                 enableBreakpointSpacing={true}
-                spacing={24}
+                spacing={1}
             >
                 <Typography variant={'h5'}>
                     {'Fullstride Games'}

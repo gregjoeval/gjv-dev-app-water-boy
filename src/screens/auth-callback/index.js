@@ -28,7 +28,7 @@ const AuthCallback = (): Component => {
             >
                 <ContentLayout
                     enableBreakpointSpacing={true}
-                    spacing={24}
+                    spacing={1}
                 >
                     <Typography variant={'h5'}>
                         {AuthCallbackName}
