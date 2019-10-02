@@ -74,6 +74,9 @@ class SportingeventsFields {
             if (data.hasOwnProperty('division')) {
                 obj['division'] = ApiClient.convertToType(data['division'], 'Boolean');
             }
+            if (data.hasOwnProperty('season')) {
+                obj['season'] = ApiClient.convertToType(data['season'], 'Boolean');
+            }
         }
         return obj;
     }
@@ -125,6 +128,11 @@ SportingeventsFields.prototype['league'] = undefined;
  * @member {Boolean} division
  */
 SportingeventsFields.prototype['division'] = undefined;
+
+/**
+ * @member {Boolean} season
+ */
+SportingeventsFields.prototype['season'] = undefined;
 
 
 

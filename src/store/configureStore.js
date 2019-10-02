@@ -5,23 +5,7 @@ import storage from 'redux-persist/lib/storage';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import rootReducer from '../reducers';
 import * as R from 'ramda';
-
-const logger = store => next => action => {
-    if (Boolean(process.env.REACT_APP_DEBUG)) {
-        // eslint-disable-next-line no-console
-        console.log('dispatching', action);
-    }
-
-    // eslint-disable-next-line prefer-reflect
-    const result = R.call(next, action);
-
-    if (Boolean(process.env.REACT_APP_DEBUG)) {
-        // eslint-disable-next-line no-console
-        console.log('next state', store.getState());
-    }
-
-    return result;
-};
+import logger from 'redux-logger';
 
 const crashReporter = () => next => action => {
     try {

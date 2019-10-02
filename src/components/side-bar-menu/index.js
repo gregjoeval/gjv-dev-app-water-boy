@@ -1,14 +1,14 @@
 import {Drawer, List, ListItem, ListItemIcon, ListItemText, Divider} from '@material-ui/core';
 import React from 'react';
-import {Link, withRouter} from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import {makeStyles} from '@material-ui/styles';
 import {navigableScreens} from '../../screens';
-import createScreen from '../../models/screen';
+import Screen from '../../models/screen';
 import * as R from 'ramda';
 import {GithubCircle as GithubIcon} from 'mdi-material-ui';
 
 const getListItems = (screens, currentPath) => R.reduce((acc, item) => {
-    const screenModel = createScreen(item);
+    const screenModel = Screen.create(item);
     const {Name, Path, Icon} = screenModel;
     const el = (
         <ListItem
@@ -37,11 +37,11 @@ const useStyles = makeStyles((theme) => ({
 
 type SideBarMenuProps = {
     onClose: Function,
-    isOpen: boolean,
-    location: Object
+    isOpen: boolean
 }
 
-const SideBarMenu = ({onClose, isOpen, location}: SideBarMenuProps) => {
+const SideBarMenu = ({onClose, isOpen}: SideBarMenuProps) => {
+    const location = useLocation();
     const {pathname} = location || {};
     const classes = useStyles();
     return (
@@ -76,4 +76,4 @@ const SideBarMenu = ({onClose, isOpen, location}: SideBarMenuProps) => {
     );
 };
 
-export default withRouter(SideBarMenu);
+export default SideBarMenu;

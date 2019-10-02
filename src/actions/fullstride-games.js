@@ -5,33 +5,60 @@ import {createDictionaryFromList} from '../libs/ramdaCookbook';
 import FullstrideGame from '../models/fullstride-game';
 
 /**
- * sets the FullstrideGames
- * @param {*} sportingEvents -
+ * sets the elements in the FullstrideGames resource
+ * @param {Array<ISportingEvent>} sportingEvents -
  * @return {{payload: *, type: string}} - action
  */
-export const setFullstrideGames = (sportingEvents) => Action.create(actionTypes.SET, sportingEvents);
+export const setFullstrideGames = (sportingEvents) => {
+    const payload = createDictionaryFromList(sportingEvents);
+    return Action.create(actionTypes.SET, payload);
+};
 
 /**
- * resets the FullstrideGames
+ * resets the FullstrideGames resource
  * @return {{payload: *, type: string}} - action
  */
 export const resetFullstrideGames = () => Action.create(actionTypes.RESET);
 
 /**
- * updates multiple FullstrideGames
+ * updates the FullstrideGames resource
+ * updates/adds multiple FullstrideGames
  * @param {Array<ISportingEvent>} sportingEvents -
  * @return {{payload: *, type: string}} - action
  */
 export const updateFullstrideGames = (sportingEvents) => {
     const payload = createDictionaryFromList(sportingEvents);
-    Action.create(actionTypes.UPDATE, payload);
+    return Action.create(actionTypes.UPDATE, payload);
 };
 
 /**
- * fetches the FullstrideGames from the data source
+ * updates the FullstrideGames resource
+ * updates/adds a single FullstrideGame
+ * @param {ISportingEvent} sportingEvent -
  * @return {{payload: *, type: string}} - action
  */
-export const fetchFullstrideGamesAsync = () => async dispatch => {
+export const updateFullstrideGame = (sportingEvent) => updateFullstrideGames([sportingEvent]);
+
+/**
+ * deletes elements from the FullstrideGames resource
+ * delete multiple FullstrideGames
+ * @param {Array<string>} ids -
+ * @return {{payload: *, type: string}} - action
+ */
+export const deleteFullstrideGames = (ids) => Action.create(actionTypes.DELETE, ids);
+
+/**
+ * delete a single FullstrideGame
+ * @param {Array<string>} id -
+ * @return {{payload: *, type: string}} - action
+ */
+export const deleteFullstrideGame = (id) => deleteFullstrideGames([id]);
+
+/**
+ * gets the FullstrideGames from the data source
+ * @return {{payload: *, type: string}} - action
+ */
+export const getFullstrideGamesAsync = () => async dispatch => {
     dispatch(Action.create(actionTypes.REQUEST));
 
     try {
@@ -39,9 +66,9 @@ export const fetchFullstrideGamesAsync = () => async dispatch => {
         const service = new WaterBoyApi.FullstrideGameControllerApi(client);
         const apiModels = await service.fullstrideGameControllerFind();
         const fullstrideGames = (apiModels || []).map(model => FullstrideGame.create(model));
-        const payload = createDictionaryFromList(fullstrideGames);
-        dispatch(Action.create(actionTypes.SET, payload));
+        dispatch(updateFullstrideGames(fullstrideGames));
     } catch (e) {
         dispatch(Action.create(actionTypes.FAIL, 'Failed to fetch'));
     }
 };
+

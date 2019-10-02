@@ -1,17 +1,18 @@
 // @flow
-import React, {Component, useEffect, useState} from 'react';
-import {Typography, Button, CircularProgress} from '@material-ui/core';
-import {useDispatch, useSelector} from 'react-redux';
+import React, {Component, Fragment, useEffect, useState} from 'react';
+import {Button, CircularProgress, Typography} from '@material-ui/core';
 import AppHeader from '../../components/app-header';
 import ScreenLayout from '../../components/screen-layout';
 import ContentLayout from '../../components/content-layout';
-import {ViewModule as ViewModuleIcon} from '@material-ui/icons';
-import {getFullstrideGamesAsync} from '../../actions/fullstride-games';
-import * as R from 'ramda';
-import FullstrideGame from '../../models/fullstride-game';
 import Screen from '../../models/screen';
-import EventCard from '../../components/event-card';
 import {makeStyles} from '@material-ui/styles';
+import {useDispatch, useSelector} from 'react-redux';
+import * as R from 'ramda';
+import EventCard from '../../components/event-card';
+import SportingEvent from '../../models/sporting-event';
+import {getSportingEventsAsync, updateSportingEvent} from '../../actions/sporting-events';
+import SportingEventDialogEdit from '../../components/sporting-event-dialog-edit';
+import {SportsHockey as SportsHockeyIcon} from '@material-ui/icons';
 
 const useStyles = makeStyles(() => ({
     listContainer: {
@@ -20,35 +21,49 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-const FullstrideGames = (): Component => {
+const Games = (): Component => {
     const classes = useStyles();
-    const {loading, data, error} = useSelector(state => state.fullstrideGames);
+    const {loading, data, error} = useSelector(state => state.sportingEvents);
     const dispatch = useDispatch();
     const [shouldFetch, setShouldFetch] = useState(true);
 
+    const [dialogOpen, setDialogOpen] = useState(null);
+    const dialogIdPrefix = 'sporting-event-dialog-';
+
     useEffect(() => {
         if (shouldFetch) {
-            dispatch(getFullstrideGamesAsync());
+            dispatch(getSportingEventsAsync());
             setShouldFetch(false);
         }
     }, [dispatch, shouldFetch]);
 
-    const x = R.values(data);
     const list = R.reduce((acc, item) => {
-        const game = FullstrideGame.create(item);
+        const model = SportingEvent.create(item);
         const element = (
-            <EventCard
-                dateTime={game.dateTime}
-                group={game.season}
-                id={game.number}
-                key={game.id}
-                location={game.rink}
-                subtext={game.teams}
-            />
+            <Fragment key={model.id}>
+                <SportingEventDialogEdit
+                    id={`${dialogIdPrefix}${model.id}`}
+                    model={model}
+                    onClose={() => setDialogOpen(null)}
+                    onSubmit={(value) => {
+                        dispatch(updateSportingEvent(value));
+                        setDialogOpen(null);
+                    }}
+                    open={Boolean(dialogOpen)}
+                />
+                <EventCard
+                    dateTime={model.dateTime}
+                    group={model.season}
+                    id={model.id}
+                    location={model.location}
+                    onEdit={() => setDialogOpen(true)}
+                    subtext={`${model.homeTeamScore} - ${model.awayTeamScore}`}
+                />
+            </Fragment>
         );
 
         return R.append(element, acc);
-    }, [], x);
+    }, [], R.values(data));
 
     return (
         <ScreenLayout
@@ -58,8 +73,9 @@ const FullstrideGames = (): Component => {
                 enableBreakpointSpacing={true}
                 spacing={1}
             >
+
                 <Typography variant={'h5'}>
-                    {FullstrideGamesName}
+                    {GamesName}
                 </Typography>
                 {
                     error && (
@@ -97,8 +113,8 @@ const FullstrideGames = (): Component => {
     );
 };
 
-export const FullstrideGamesPath = '/fullstride-games';
-export const FullstrideGamesName = 'Fullstride Games';
-export const FullstrideGamesIcon = ViewModuleIcon;
-export const FullstrideGamesScreen = Screen.create({Component: FullstrideGames, Path: FullstrideGamesPath, Name: FullstrideGamesName, Icon: FullstrideGamesIcon});
-export default FullstrideGames;
+export const GamesPath = '/games';
+export const GamesName = 'Games';
+export const GamesIcon = SportsHockeyIcon;
+export const GamesScreen = Screen.create({Component: Games, Path: GamesPath, Name: GamesName, Icon: GamesIcon, hasAuth: true});
+export default Games;

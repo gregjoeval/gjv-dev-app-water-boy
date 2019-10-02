@@ -6,7 +6,7 @@ import ScreenLayout from '../../components/screen-layout';
 import ContentLayout from '../../components/content-layout';
 import {useAuth0} from '../../components/auth-provider';
 import {AccountCircle as AccountCircleIcon} from '@material-ui/icons';
-import createScreen from '../../models/screen';
+import Screen from '../../models/screen';
 import User from '../../models/user';
 
 const Account = (): Component => {
@@ -49,5 +49,5 @@ const Account = (): Component => {
 export const AccountPath = '/account';
 export const AccountName = 'Account';
 export const AccountIcon = AccountCircleIcon;
-export const AccountScreen = createScreen({Component: Account, Path: AccountPath, Name: AccountName, Icon: AccountIcon, hasAuth: true});
+export const AccountScreen = Screen.create({Component: Account, Path: AccountPath, Name: AccountName, Icon: AccountIcon, hasAuth: true});
 export default Account;

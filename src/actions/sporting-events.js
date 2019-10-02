@@ -1,11 +1,4 @@
-import {
-    SPORTING_EVENTS__FETCH__FAIL,
-    SPORTING_EVENTS__FETCH__REQUEST,
-    SPORTING_EVENTS__FETCH__SUCCESS,
-    SPORTING_EVENTS__RESET,
-    SPORTING_EVENTS__SET,
-    SPORTING_EVENTS__UPDATE
-} from '../constants/actionTypes';
+import {actionTypes} from '../reducers/sportingEvents';
 import Action from '../models/action';
 import * as WaterBoyApi from '../vendor/water-boy-api-client/src/index';
 import {createDictionaryFromList} from '../libs/ramdaCookbook';
@@ -13,16 +6,19 @@ import SportingEvent from '../models/sporting-event';
 
 /**
  * sets the sportingEvents
- * @param {*} sportingEvents -
+ * @param {Array<ISportingEvent>} sportingEvents -
  * @return {{payload: *, type: string}} - action
  */
-export const setSportingEvents = (sportingEvents) => Action.create(SPORTING_EVENTS__SET, sportingEvents);
+export const setSportingEvents = (sportingEvents) => {
+    const payload = createDictionaryFromList(sportingEvents);
+    return Action.create(actionTypes.SET, payload);
+};
 
 /**
  * resets the sportingEvents
  * @return {{payload: *, type: string}} - action
  */
-export const resetSportingEvents = () => Action.create(SPORTING_EVENTS__RESET);
+export const resetSportingEvents = () => Action.create(actionTypes.RESET);
 
 /**
  * updates multiple sportingEvents
@@ -31,24 +27,86 @@ export const resetSportingEvents = () => Action.create(SPORTING_EVENTS__RESET);
  */
 export const updateSportingEvents = (sportingEvents) => {
     const payload = createDictionaryFromList(sportingEvents);
-    Action.create(SPORTING_EVENTS__UPDATE, payload);
+    return Action.create(actionTypes.UPDATE, payload);
 };
 
 /**
- * fetches the sportingEvents from the data source
+ * updates a single sportingEvent
+ * @param {ISportingEvent} sportingEvent -
  * @return {{payload: *, type: string}} - action
  */
-export const fetchSportingEventsAsync = () => async dispatch => {
-    dispatch(Action.create(SPORTING_EVENTS__FETCH__REQUEST));
+export const updateSportingEvent = (sportingEvent) => updateSportingEvents([sportingEvent]);
+
+const createService = () => {
+    const client = new WaterBoyApi.ApiClient();
+    return new WaterBoyApi.SportingEventControllerApi(client);
+};
+
+/**
+ * deletes elements from the SportingEvents resource
+ * delete multiple SportingEvents
+ * @param {Array<string>} ids -
+ * @return {{payload: *, type: string}} - action
+ */
+export const deleteSportingEvents = (ids) => Action.create(actionTypes.DELETE, ids);
+
+/**
+ * delete a single SportingEvent
+ * @param {Array<string>} id -
+ * @return {{payload: *, type: string}} - action
+ */
+export const deleteSportingEvent = (id) => deleteSportingEvents([id]);
+
+/**
+ * fetches the sportingEvents from the data source
+ * @returns {Function} -
+ */
+export const getSportingEventsAsync = () => async dispatch => {
+    dispatch(Action.create(actionTypes.REQUEST));
 
     try {
-        const client = new WaterBoyApi.ApiClient();
-        const service = new WaterBoyApi.SportingEventControllerApi(client);
+        const service = createService();
         const apiModels = await service.sportingEventControllerFind();
         const sportingEvents = (apiModels || []).map(model => SportingEvent.create(model));
-        const payload = createDictionaryFromList(sportingEvents);
-        dispatch(Action.create(SPORTING_EVENTS__FETCH__SUCCESS, payload));
+        dispatch(updateSportingEvents(sportingEvents));
     } catch (e) {
-        dispatch(Action.create(SPORTING_EVENTS__FETCH__FAIL, {}));
+        dispatch(Action.create(actionTypes.FAIL, {}));
+    }
+};
+
+/**
+ * post a sportingEvent to the data source
+ * @param {ISportingEvent} sportingEvent -
+ * @returns {Function} -
+ */
+export const postSportingEventAsync = (sportingEvent) => async dispatch => {
+    const apiModel = WaterBoyApi.SportingEvent.constructFromObject(sportingEvent);
+
+    dispatch(Action.create(actionTypes.REQUEST));
+
+    try {
+        const service = createService();
+        const model = await service.sportingEventControllerCreate({sportingEvent: apiModel});
+        const newSportingEvent = SportingEvent.create(model);
+        dispatch(updateSportingEvent(newSportingEvent));
+    } catch (e) {
+        dispatch(Action.create(actionTypes.FAIL, {}));
+    }
+};
+
+/**
+ * delete a sportingEvent in the data source
+ * @param {string} id -
+ * @returns {Function} -
+ */
+export const deleteSportingEventAsync = (id) => async dispatch => {
+    dispatch(Action.create(actionTypes.REQUEST));
+
+    try {
+        const service = createService();
+        await service.sportingEventControllerDeleteById(id);
+        dispatch(deleteSportingEvent(id));
+    } catch (e) {
+        dispatch(Action.create(actionTypes.FAIL, {}));
     }
 };

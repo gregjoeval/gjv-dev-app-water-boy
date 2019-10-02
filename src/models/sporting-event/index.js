@@ -10,6 +10,7 @@ export interface ISportingEvent {
     awayTeamScore?: string;
     league?: string;
     division?: string;
+    season?: string;
 }
 
 export default class SportingEvent implements ISportingEvent {
@@ -25,5 +26,6 @@ export default class SportingEvent implements ISportingEvent {
         this.awayTeamScore = args.awayTeamScore || null;
         this.league = args.league || null;
         this.division = args.division || null;
+        this.season = args.season || null;
     }
 }

@@ -78,6 +78,9 @@ class SportingEvent {
             if (data.hasOwnProperty('division')) {
                 obj['division'] = ApiClient.convertToType(data['division'], 'String');
             }
+            if (data.hasOwnProperty('season')) {
+                obj['season'] = ApiClient.convertToType(data['season'], 'String');
+            }
         }
         return obj;
     }
@@ -129,6 +132,11 @@ SportingEvent.prototype['league'] = undefined;
  * @member {String} division
  */
 SportingEvent.prototype['division'] = undefined;
+
+/**
+ * @member {String} season
+ */
+SportingEvent.prototype['season'] = undefined;
 
 
 

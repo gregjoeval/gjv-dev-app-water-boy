@@ -5,7 +5,7 @@ import AppHeader from '../../components/app-header';
 import ScreenLayout from '../../components/screen-layout';
 import ContentLayout from '../../components/content-layout';
 import {useAuth0} from '../../components/auth-provider';
-import createScreen from '../../models/screen';
+import Screen from '../../models/screen';
 import {HomePath} from '../home';
 import DelayedRedirect from '../../components/delayed-redirect';
 
@@ -20,7 +20,7 @@ const AuthCallback = (): Component => {
 
     return (
         <DelayedRedirect
-            duration={50}
+            duration={3000}
             to={HomePath}
         >
             <ScreenLayout
@@ -49,5 +49,5 @@ const AuthCallback = (): Component => {
 
 export const AuthCallbackPath = '/auth0_callback';
 export const AuthCallbackName = 'Auth Callback';
-export const AuthCallbackScreen = createScreen({Component: AuthCallback, Path: AuthCallbackPath, Name: AuthCallbackName});
+export const AuthCallbackScreen = Screen.create({Component: AuthCallback, Path: AuthCallbackPath, Name: AuthCallbackName});
 export default AuthCallback;

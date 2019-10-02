@@ -2,9 +2,14 @@
 
 export interface IAction {
     type: string,
-    payload: Object
+    payload: Object,
+    error: boolean
 }
 
-export default class Action implements IAction {
-    static create = (type: string = null, payload: any = null) => ({type, payload});
-}
+const create = (type: string = null, payload: any = null, error: boolean = false): IAction => ({type, payload, error});
+
+const Action = {
+    create
+};
+
+export default Action;

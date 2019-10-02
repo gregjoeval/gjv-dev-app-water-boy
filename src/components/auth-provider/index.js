@@ -1,14 +1,13 @@
 // copied from https://auth0.com/docs/quickstart/spa/react/01-login
 import React, {useState, useEffect, useContext, ReactNodeArray} from 'react';
 import createAuth0Client from '@auth0/auth0-spa-js';
-
-const DEFAULT_REDIRECT_CALLBACK = () =>
-    window.history.replaceState({}, document.title, window.location.pathname);
+import {useLocation, useHistory} from 'react-router-dom';
+import {navigate} from '../../libs/navigation';
 
 const DEFAULT_AUTH0_CLIENT = {
     loginWithPopup: () => {},
     getUser: () => {},
-    handleRedirectCallback: () => {},
+    handleRedirectCallback: () => ({targetUrl: window.location.pathname}),
     getIdTokenClaims: () => {},
     loginWithRedirect: () => {},
     getTokenSilently: () => {},
@@ -26,9 +25,11 @@ type Auth0ProviderProps = {
 
 export const Auth0Provider = ({
     children,
-    onRedirectCallback = DEFAULT_REDIRECT_CALLBACK,
     ...initOptions
 }: Auth0ProviderProps) => {
+    const location = useLocation();
+    const history = useHistory();
+
     const [isAuthenticated, setIsAuthenticated] = useState();
     const [user, setUser] = useState();
     const [auth0Client, setAuth0Client] = useState(DEFAULT_AUTH0_CLIENT);
@@ -49,7 +50,7 @@ export const Auth0Provider = ({
 
             if (window.location.search.includes('code=')) {
                 const {appState} = await auth0FromHook.handleRedirectCallback();
-                onRedirectCallback(appState);
+                navigate(history, appState.targetUrl);
             }
 
             const isAuthed = await auth0FromHook.isAuthenticated();
@@ -103,7 +104,7 @@ export const Auth0Provider = ({
                 loginWithPopup,
                 handleRedirectCallback,
                 getIdTokenClaims: ({...p}) => auth0Client.getIdTokenClaims({...p}),
-                loginWithRedirect: ({...p}) => auth0Client.loginWithRedirect({...p}),
+                loginWithRedirect: ({...p}) => auth0Client.loginWithRedirect({...p, appState: {targetUrl: location.pathname}}),
                 getTokenSilently: ({...p}) => auth0Client.getTokenSilently({...p}),
                 getTokenWithPopup: ({...p}) => auth0Client.getTokenWithPopup({...p}),
                 logout: ({...p}) => auth0Client.logout({...p})
