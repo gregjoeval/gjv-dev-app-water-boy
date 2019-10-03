@@ -107,7 +107,7 @@ export const Auth0Provider = ({
                 loginWithRedirect: ({...p}) => auth0Client.loginWithRedirect({...p, appState: {targetUrl: location.pathname}}),
                 getTokenSilently: ({...p}) => auth0Client.getTokenSilently({...p}),
                 getTokenWithPopup: ({...p}) => auth0Client.getTokenWithPopup({...p}),
-                logout: ({...p}) => auth0Client.logout({...p})
+                logout: ({...p}) => auth0Client.logout({...p, returnTo: initOptions.redirect_uri})
             }}
         >
             {children}

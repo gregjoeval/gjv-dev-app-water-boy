@@ -1,4 +1,6 @@
 // @flow
+import * as R from 'ramda';
+import * as uuid from 'uuid';
 
 export interface ISportingEvent {
     id: string;
@@ -13,19 +15,50 @@ export interface ISportingEvent {
     season?: string;
 }
 
-export default class SportingEvent implements ISportingEvent {
-    static create = (args) => new SportingEvent(args || {});
+const create = (args: ISportingEvent|Object): ISportingEvent => {
+    const {
+        id,
+        dateTime,
+        location,
+        homeTeamId,
+        awayTeamId,
+        homeTeamScore,
+        awayTeamScore,
+        league,
+        division,
+        season
+    } = args || {};
 
-    constructor(args) {
-        this.id = args.id || null;
-        this.dateTime = args.dateTime || null;
-        this.location = args.location || null;
-        this.homeTeamId = args.homeTeamId || null;
-        this.awayTeamId = args.awayTeamId || null;
-        this.homeTeamScore = args.homeTeamScore || null;
-        this.awayTeamScore = args.awayTeamScore || null;
-        this.league = args.league || null;
-        this.division = args.division || null;
-        this.season = args.season || null;
-    }
-}
+    const o = {
+        id: id || uuid(),
+        dateTime,
+        location,
+        homeTeamId,
+        awayTeamId,
+        homeTeamScore,
+        awayTeamScore,
+        league,
+        division,
+        season
+    };
+
+    return Object.freeze(o);
+};
+
+const isValid = (model: ISportingEvent): boolean => {
+    const keys = R.keys(model);
+    const isModelValid = R.reduce((acc, key) => {
+        const result = Boolean(model[key]);
+        return result
+            ? acc && result
+            : R.reduced(result); // fail at first invalid value
+    }, true, keys);
+    return Boolean(isModelValid);
+};
+
+const SportingEvent = {
+    create,
+    isValid
+};
+
+export default SportingEvent;

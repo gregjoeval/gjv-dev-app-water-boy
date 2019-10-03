@@ -45,7 +45,8 @@
     "redux-persist": "^5.10.0",
     "redux-starter-kit": "^0.7.0",
     "redux-thunk": "^2.3.0",
-    "superagent": "3.7.0"
+    "superagent": "3.7.0",
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "babel-eslint": "10.0.3",

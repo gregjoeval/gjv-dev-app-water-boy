@@ -63,7 +63,7 @@ const Home = (): Component => {
                 {
                     error && (
                         <Typography variant={'body1'}>
-                            {`error: ${error}`}
+                            {`error: ${error.message}`}
                         </Typography>
                     )
                 }

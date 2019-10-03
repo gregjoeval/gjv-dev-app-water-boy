@@ -10,9 +10,12 @@ import {useDispatch, useSelector} from 'react-redux';
 import * as R from 'ramda';
 import EventCard from '../../components/event-card';
 import SportingEvent from '../../models/sporting-event';
-import {getSportingEventsAsync, updateSportingEvent} from '../../actions/sporting-events';
+import {deleteSportingEventAsync, getSportingEventsAsync, postSportingEventAsync, putSportingEventAsync} from '../../actions/sporting-events';
 import SportingEventDialogEdit from '../../components/sporting-event-dialog-edit';
 import {SportsHockey as SportsHockeyIcon} from '@material-ui/icons';
+import moment from 'moment';
+import {getCurrentSeason} from '../../libs/dateTimeHelpers';
+import * as uuid from 'uuid';
 
 const useStyles = makeStyles(() => ({
     listContainer: {
@@ -27,7 +30,7 @@ const Games = (): Component => {
     const dispatch = useDispatch();
     const [shouldFetch, setShouldFetch] = useState(true);
 
-    const [dialogOpen, setDialogOpen] = useState(null);
+    const [openDialogId, setOpenDialogId] = useState(null);
     const dialogIdPrefix = 'sporting-event-dialog-';
 
     useEffect(() => {
@@ -44,19 +47,20 @@ const Games = (): Component => {
                 <SportingEventDialogEdit
                     id={`${dialogIdPrefix}${model.id}`}
                     model={model}
-                    onClose={() => setDialogOpen(null)}
+                    onClose={() => setOpenDialogId(null)}
                     onSubmit={(value) => {
-                        dispatch(updateSportingEvent(value));
-                        setDialogOpen(null);
+                        dispatch(putSportingEventAsync(value));
+                        setOpenDialogId(null);
                     }}
-                    open={Boolean(dialogOpen)}
+                    open={Boolean(openDialogId === `${dialogIdPrefix}${model.id}`)}
                 />
                 <EventCard
                     dateTime={model.dateTime}
                     group={model.season}
                     id={model.id}
                     location={model.location}
-                    onEdit={() => setDialogOpen(true)}
+                    onDelete={() => dispatch(deleteSportingEventAsync(model.id))}
+                    onEdit={() => setOpenDialogId(`${dialogIdPrefix}${model.id}`)}
                     subtext={`${model.homeTeamScore} - ${model.awayTeamScore}`}
                 />
             </Fragment>
@@ -73,23 +77,49 @@ const Games = (): Component => {
                 enableBreakpointSpacing={true}
                 spacing={1}
             >
-
                 <Typography variant={'h5'}>
                     {GamesName}
                 </Typography>
                 {
                     error && (
                         <Typography variant={'body1'}>
-                            {`error: ${error}`}
+                            {`error: ${error.message}`}
                         </Typography>
                     )
                 }
-                <Button
-                    href={null}
-                    onClick={() => setShouldFetch(true)}
+                <ContentLayout
+                    direction={'row'}
+                    justify={'center'}
                 >
-                    {'refresh'}
-                </Button>
+                    <Fragment>
+                        <SportingEventDialogEdit
+                            id={`${dialogIdPrefix}create`}
+                            model={SportingEvent.create({
+                                id: uuid(),
+                                league: 'Fullstride',
+                                division: 'Upper Bronze',
+                                season: `${getCurrentSeason()} ${moment().year()}`
+                            })}
+                            onClose={() => setOpenDialogId(null)}
+                            onSubmit={(value) => {
+                                dispatch(postSportingEventAsync(value));
+                                setOpenDialogId(null);
+                            }}
+                            open={Boolean(openDialogId === `${dialogIdPrefix}create`)}
+                        />
+                        <Button
+                            onClick={() => setOpenDialogId(`${dialogIdPrefix}create`)}
+                        >
+                            {'create'}
+                        </Button>
+                    </Fragment>
+                    <Button
+                        href={null}
+                        onClick={() => setShouldFetch(true)}
+                    >
+                        {'refresh'}
+                    </Button>
+                </ContentLayout>
                 {
                     loading
                         ? <CircularProgress/>

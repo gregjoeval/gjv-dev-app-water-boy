@@ -58,7 +58,7 @@ export const deleteSportingEvents = (ids) => Action.create(actionTypes.DELETE, i
 export const deleteSportingEvent = (id) => deleteSportingEvents([id]);
 
 /**
- * fetches the sportingEvents from the data source
+ * fetch the sportingEvents from the data source
  * @returns {Function} -
  */
 export const getSportingEventsAsync = () => async dispatch => {
@@ -70,7 +70,7 @@ export const getSportingEventsAsync = () => async dispatch => {
         const sportingEvents = (apiModels || []).map(model => SportingEvent.create(model));
         dispatch(updateSportingEvents(sportingEvents));
     } catch (e) {
-        dispatch(Action.create(actionTypes.FAIL, {}));
+        dispatch(Action.create(actionTypes.FAIL, Error('Failed to fetch.'), true));
     }
 };
 
@@ -90,7 +90,45 @@ export const postSportingEventAsync = (sportingEvent) => async dispatch => {
         const newSportingEvent = SportingEvent.create(model);
         dispatch(updateSportingEvent(newSportingEvent));
     } catch (e) {
-        dispatch(Action.create(actionTypes.FAIL, {}));
+        dispatch(Action.create(actionTypes.FAIL, Error('Failed to post.'), true));
+    }
+};
+
+/**
+ * put a sportingEvent to the data source
+ * @param {ISportingEvent} sportingEvent -
+ * @returns {Function} -
+ */
+export const putSportingEventAsync = (sportingEvent) => async dispatch => {
+    const apiModel = WaterBoyApi.SportingEvent.constructFromObject(sportingEvent);
+
+    dispatch(Action.create(actionTypes.REQUEST));
+
+    try {
+        const service = createService();
+        await service.sportingEventControllerReplaceById(sportingEvent.id, {sportingEvent: apiModel});
+        dispatch(updateSportingEvent(sportingEvent));
+    } catch (e) {
+        dispatch(Action.create(actionTypes.FAIL, Error('Failed to put.'), true));
+    }
+};
+
+/**
+ * patch a sportingEvent to the data source
+ * @param {ISportingEvent} sportingEvent -
+ * @returns {Function} -
+ */
+export const patchSportingEventAsync = (sportingEvent) => async dispatch => {
+    const apiModel = WaterBoyApi.SportingEvent.constructFromObject(sportingEvent);
+
+    dispatch(Action.create(actionTypes.REQUEST));
+
+    try {
+        const service = createService();
+        await service.sportingEventControllerUpdateById(sportingEvent.id, {sportingEvent: apiModel});
+        dispatch(updateSportingEvent(sportingEvent));
+    } catch (e) {
+        dispatch(Action.create(actionTypes.FAIL, Error('Failed to patch.'), true));
     }
 };
 
@@ -107,6 +145,6 @@ export const deleteSportingEventAsync = (id) => async dispatch => {
         await service.sportingEventControllerDeleteById(id);
         dispatch(deleteSportingEvent(id));
     } catch (e) {
-        dispatch(Action.create(actionTypes.FAIL, {}));
+        dispatch(Action.create(actionTypes.FAIL, Error('Failed to delete.'), true));
     }
 };

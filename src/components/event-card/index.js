@@ -1,5 +1,5 @@
 // @flow
-import React, {cloneElement, Component} from 'react';
+import React, {Component} from 'react';
 import {Card, CardActions, CardContent, Typography, Button} from '@material-ui/core';
 import {makeStyles} from '@material-ui/styles';
 import ContentLayout from '../content-layout';
@@ -17,10 +17,11 @@ type EventCardProps = {
     dateTime: string,
     location: string,
     subtext: string,
-    onEdit?: Function
+    onEdit?: Function,
+    onDelete?: Function
 };
 
-const EventCard = ({children, id, group, dateTime, location, subtext, onEdit}: EventCardProps): Component => {
+const EventCard = ({children, id, group, dateTime, location, subtext, onEdit, onDelete}: EventCardProps): Component => {
     const classes = useStyles();
     return (
         <Card className={classes.card}>
@@ -57,17 +58,26 @@ const EventCard = ({children, id, group, dateTime, location, subtext, onEdit}: E
                 </ContentLayout>
                 {children}
             </CardContent>
-            {
-                onEdit
-                    ? (
-                        <CardActions>
+            <CardActions>
+                {
+                    onEdit
+                        ? (
                             <Button onClick={onEdit}>
                                 {'edit'}
                             </Button>
-                        </CardActions>
-                    )
-                    : null
-            }
+                        )
+                        : null
+                }
+                {
+                    onDelete
+                        ? (
+                            <Button onClick={onDelete}>
+                                {'delete'}
+                            </Button>
+                        )
+                        : null
+                }
+            </CardActions>
         </Card>
     );
 };

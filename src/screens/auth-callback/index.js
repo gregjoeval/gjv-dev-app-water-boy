@@ -20,7 +20,7 @@ const AuthCallback = (): Component => {
 
     return (
         <DelayedRedirect
-            duration={3000}
+            duration={1000}
             to={HomePath}
         >
             <ScreenLayout
