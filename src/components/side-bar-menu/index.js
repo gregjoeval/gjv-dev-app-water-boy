@@ -63,7 +63,7 @@ const SideBarMenu = ({onClose, isOpen}: SideBarMenuProps) => {
                 <ListItem
                     button={true}
                     component={'a'}
-                    href={'https://github.com/gregjoeval/gjv-dev-app-water-boy'}
+                    href={process.env.REACT_APP_GITHUB_REPOSITORY_URI}
                     target={'_blank'}
                 >
                     <ListItemIcon>

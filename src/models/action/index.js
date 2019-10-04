@@ -1,12 +1,12 @@
 // @flow
 
-export interface IAction {
+export interface IAction<T> {
     type: string,
-    payload: Object,
+    payload: T,
     error: boolean
 }
 
-const create = (type: string = null, payload: any = null, error: boolean = false): IAction => ({type, payload, error});
+const create = <T>(type: string = null, payload: T = null, error: boolean = false): IAction => ({type, payload, error});
 
 const Action = {
     create

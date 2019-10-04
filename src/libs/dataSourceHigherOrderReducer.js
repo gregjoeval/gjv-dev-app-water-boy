@@ -1,4 +1,5 @@
-import DataSourceStore from '../models/data-source-store';
+// TODO: delete this file, its only for example purposes
+import DataStore from '../models/data-source-store';
 import * as R from 'ramda';
 import {createReducer} from 'redux-starter-kit';
 import Action from '../models/action';
@@ -47,7 +48,7 @@ type ActionTypes = {
     UPDATE__REQUEST: string;
     UPDATE__SUCCESS: string
 };
-type Reducer = (state: (DataSourceStore | null), action: Action) => DataSourceStore;
+type Reducer = (state: (DataStore | null), action: Action) => DataStore;
 
 /**
  * creates a data source store and actions types
@@ -56,7 +57,7 @@ type Reducer = (state: (DataSourceStore | null), action: Action) => DataSourceSt
  * @returns {[Reducer, ActionTypes]} -
  */
 export const withDataSource = (resourceName, initialDataState = {}): [Reducer, ActionTypes] => {
-    const initialState = DataSourceStore.create({
+    const initialState = DataStore.create({
         loading: false,
         data: initialDataState,
         error: null
@@ -86,19 +87,19 @@ export const withDataSource = (resourceName, initialDataState = {}): [Reducer, A
         UPDATE__SUCCESS
     } = actionTypes;
 
-    const failAction = (state, action) => DataSourceStore.create({loading: false, error: action.payload, data: state.data});
-    const requestAction = (state) => DataSourceStore.create({loading: true, error: null, data: state.data});
-    const setAction = (state, action) => DataSourceStore.create({loading: false, error: null, data: action.payload});
+    const failAction = (state, action) => DataStore.create({loading: false, error: action.payload, data: state.data});
+    const requestAction = (state) => DataStore.create({loading: true, error: null, data: state.data});
+    const setAction = (state, action) => DataStore.create({loading: false, error: null, data: action.payload});
     const resetAction = () => initialState;
     const updateAction = (state, action) => {
         const data = R.mergeDeepRight(state.data, action.payload);
-        return DataSourceStore.create({loading: false, error: null, data: data});
+        return DataStore.create({loading: false, error: null, data: data});
     };
     const deleteAction = (state, action) => {
         const data = R.omit([action.payload], state.data);
-        return DataSourceStore.create({loading: false, error: null, data: data});
+        return DataStore.create({loading: false, error: null, data: data});
     };
-    const fetchAction = (state, action) => DataSourceStore.create({loading: false, error: null, data: action.payload});
+    const fetchAction = (state, action) => DataStore.create({loading: false, error: null, data: action.payload});
 
     const reducer = createReducer(initialState, {
         [SET]: setAction,

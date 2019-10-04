@@ -29,6 +29,7 @@ const EventCard = ({children, id, group, dateTime, location, subtext, onEdit, on
                 <ContentLayout
                     direction={'row'}
                     justify={'space-between'}
+                    wrap={'wrap'}
                 >
                     <Typography variant={'body2'}>
                         {group}
@@ -40,6 +41,7 @@ const EventCard = ({children, id, group, dateTime, location, subtext, onEdit, on
                 <ContentLayout
                     direction={'row'}
                     justify={'space-between'}
+                    wrap={'wrap'}
                 >
                     <Typography variant={'body2'}>
                         {dateTime}
@@ -51,6 +53,7 @@ const EventCard = ({children, id, group, dateTime, location, subtext, onEdit, on
                 <ContentLayout
                     direction={'row'}
                     justify={'space-between'}
+                    wrap={'wrap'}
                 >
                     <Typography variant={'body2'}>
                         {subtext}

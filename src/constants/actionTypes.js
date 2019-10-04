@@ -1,3 +1,4 @@
+// TODO: update description
 /**
  Action Type: {NOUN}__{VERB}__{STATE}
 
@@ -25,14 +26,17 @@
  Note: we have two variations of the end state for this action (SUCCESS/FAIL) so that we can update the application state based on whether we get back an acceptable response or not
  **/
 
-export const REHYDRATE = 'persist/REHYDRATE';
+export const VERBS = {
+    DELETE: 'DELETE',
+    FAIL: 'FAIL',
+    RESET: 'RESET',
+    REQUEST: 'REQUEST',
+    SET: 'SET',
+    UPDATE: 'UPDATE'
+};
+
+export const REHYDRATE = 'persist/REHYDRATE'; // defined by redux-persist
 export const THEME_ID__SET = 'THEME_ID__SET';
 export const THEME_TYPE__UPDATE = 'THEME_TYPE__UPDATE';
 export const CONFIG__SET = 'CONFIG__SET';
 export const CONFIG__RESET = 'CONFIG__RESET';
-export const SPORTING_EVENTS__SET = 'SPORTING_EVENTS__SET';
-export const SPORTING_EVENTS__RESET = 'SPORTING_EVENTS__RESET';
-export const SPORTING_EVENTS__UPDATE = 'SPORTING_EVENTS__UPDATE';
-export const SPORTING_EVENTS__FETCH__REQUEST = 'SPORTING_EVENTS__FETCH__REQUEST';
-export const SPORTING_EVENTS__FETCH__SUCCESS = 'SPORTING_EVENTS__FETCH__SUCCESS';
-export const SPORTING_EVENTS__FETCH__FAIL = 'SPORTING_EVENTS__FETCH__FAIL';
