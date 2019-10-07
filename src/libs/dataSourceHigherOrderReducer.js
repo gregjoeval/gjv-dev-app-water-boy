@@ -1,5 +1,5 @@
 // TODO: delete this file, its only for example purposes
-import DataStore from '../models/data-source-store';
+import DataStore from '../models/data-store';
 import * as R from 'ramda';
 import {createReducer} from 'redux-starter-kit';
 import Action from '../models/action';

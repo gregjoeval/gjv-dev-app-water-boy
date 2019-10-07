@@ -1,4 +1,4 @@
-import DataStore from '../models/data-source-store';
+import DataStore from '../models/data-store';
 import * as R from 'ramda';
 import makeReducer from './makeReducer';
 import type {ActionDictionary} from './makeReducer';
@@ -10,14 +10,14 @@ export type ActionTypes = DELETE | FAIL | RESET | REQUEST | SET | UPDATE
 export type Factory<TInput, T> = (args: TInput) => T
 
 /**
- * make a DataStore reducer
+ * make a Dictionary reducer
  * @param {string} name -
  * @param {any} initialState -
  * @param {Factory} factoryFunction -
  * @param {Object} actionsDictionary -
  * @returns {[Reducer<T>, Object]} -
  */
-export const makeDataStoreReducer = <TActionTypes: ActionTypes, TInput: DataStore, T: DataStore> (
+const makeDictionaryReducer = <TActionTypes: ActionTypes, TInput: DataStore, T: DataStore<Object>> (
     name: string,
     initialState: TInput,
     factoryFunction: Factory<TInput, T> = DataStore.create,
@@ -51,3 +51,5 @@ export const makeDataStoreReducer = <TActionTypes: ActionTypes, TInput: DataStor
 
     return makeReducer(name, initState, actionsDict);
 };
+
+export default makeDictionaryReducer;

@@ -1,5 +1,5 @@
-import {makeDataStoreReducer} from '../libs/makeDataStoreReducer';
+import makeDictionaryReducer from '../libs/makeDictionaryReducer';
 
-const [_reducer, _actionTypes] = makeDataStoreReducer('FULLSTRIDE_GAMES');
+const [_reducer, _actionTypes] = makeDictionaryReducer('FULLSTRIDE_GAMES');
 
 export {_reducer as reducer, _actionTypes as actionTypes};
