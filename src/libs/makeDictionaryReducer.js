@@ -31,7 +31,7 @@ const makeDictionaryReducer = <TActionTypes: ActionTypes, TInput: DataStore, T: 
     };
     const failAction = (state, action) => factoryFunction({...initState, error: action.payload, data: state.data});
     const resetAction = () => initState;
-    const requestAction = (state) => factoryFunction({...initState, loading: true, data: state.data});
+    const requestAction = () => factoryFunction({...initState, loading: true});
     const setAction = (state, action) => factoryFunction({...initState, data: action.payload});
     const updateAction = (state, action) => {
         const data = R.mergeDeepRight(state.data, action.payload);
