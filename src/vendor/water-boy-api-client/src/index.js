@@ -29,6 +29,7 @@ import InlineResponse2002 from './model/InlineResponse2002';
 import InlineResponse2003 from './model/InlineResponse2003';
 import PeopleFields from './model/PeopleFields';
 import Person from './model/Person';
+import ScheduledJobModel from './model/ScheduledJobModel';
 import SportingEvent from './model/SportingEvent';
 import SportingeventsFields from './model/SportingeventsFields';
 import Team from './model/Team';
@@ -40,11 +41,11 @@ import UsersFields from './model/UsersFields';
 import FullstrideGameControllerApi from './api/FullstrideGameControllerApi';
 import PersonControllerApi from './api/PersonControllerApi';
 import PingControllerApi from './api/PingControllerApi';
+import ScheduledJobControllerApi from './api/ScheduledJobControllerApi';
 import SportingEventControllerApi from './api/SportingEventControllerApi';
 import TeamControllerApi from './api/TeamControllerApi';
 import UserControllerApi from './api/UserControllerApi';
 import UserGroupControllerApi from './api/UserGroupControllerApi';
-import WhoAmIControllerApi from './api/WhoAmIControllerApi';
 
 
 /**
@@ -182,6 +183,12 @@ export {
     Person,
 
     /**
+     * The ScheduledJobModel model constructor.
+     * @property {module:model/ScheduledJobModel}
+     */
+    ScheduledJobModel,
+
+    /**
      * The SportingEvent model constructor.
      * @property {module:model/SportingEvent}
      */
@@ -248,6 +255,12 @@ export {
     PingControllerApi,
 
     /**
+    * The ScheduledJobControllerApi service constructor.
+    * @property {module:api/ScheduledJobControllerApi}
+    */
+    ScheduledJobControllerApi,
+
+    /**
     * The SportingEventControllerApi service constructor.
     * @property {module:api/SportingEventControllerApi}
     */
@@ -269,11 +282,5 @@ export {
     * The UserGroupControllerApi service constructor.
     * @property {module:api/UserGroupControllerApi}
     */
-    UserGroupControllerApi,
-
-    /**
-    * The WhoAmIControllerApi service constructor.
-    * @property {module:api/WhoAmIControllerApi}
-    */
-    WhoAmIControllerApi
+    UserGroupControllerApi
 };
