@@ -1,5 +1,5 @@
 // @flow
-import React, {Component, useEffect, useState} from 'react';
+import React, {Component, useCallback, useEffect, useState} from 'react';
 import {Button, CircularProgress, Typography} from '@material-ui/core';
 import AppHeader from '../../components/app-header';
 import ScreenLayout from '../../components/screen-layout';
@@ -10,8 +10,11 @@ import {makeStyles} from '@material-ui/styles';
 import {useDispatch, useSelector} from 'react-redux';
 import * as R from 'ramda';
 import EventCard from '../../components/event-card';
-import SportingEvent from '../../models/sporting-event';
 import {getSportingEventsAsync} from '../../actions/sporting-events';
+import moment from 'moment';
+import SportingEvent from '../../models/sporting-event';
+import type {ISportingEvent} from '../../models/sporting-event';
+import type {IFullstrideGame} from '../../models/fullstride-game';
 
 const useStyles = makeStyles(() => ({
     listContainer: {
@@ -33,6 +36,12 @@ const Home = (): Component => {
         }
     }, [dispatch, shouldFetch]);
 
+    const values = R.values(data);
+    const filteredData = R.sortWith([R.descend((item: IFullstrideGame) => {
+        const dateTimeA = moment(item.dateTime);
+        return dateTimeA.valueOf();
+    })], values);
+
     const list = R.reduce((acc, item) => {
         const model = SportingEvent.create(item);
         const element = (
@@ -47,7 +56,7 @@ const Home = (): Component => {
         );
 
         return R.append(element, acc);
-    }, [], R.values(data));
+    }, [], filteredData);
 
     return (
         <ScreenLayout

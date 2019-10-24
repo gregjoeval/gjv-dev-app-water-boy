@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {Card, CardActions, CardContent, Typography, Button} from '@material-ui/core';
 import {makeStyles} from '@material-ui/styles';
 import ContentLayout from '../content-layout';
+import moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
     card: {
@@ -44,7 +45,7 @@ const EventCard = ({children, id, group, dateTime, location, subtext, onEdit, on
                     wrap={'wrap'}
                 >
                     <Typography variant={'body2'}>
-                        {dateTime}
+                        {moment(dateTime).format('lll')}
                     </Typography>
                     <Typography variant={'body2'}>
                         {location}

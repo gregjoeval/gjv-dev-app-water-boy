@@ -12,6 +12,8 @@ import FullstrideGame from '../../models/fullstride-game';
 import Screen from '../../models/screen';
 import EventCard from '../../components/event-card';
 import {makeStyles} from '@material-ui/styles';
+import type {IFullstrideGame} from '../../models/fullstride-game';
+import moment from 'moment';
 
 const useStyles = makeStyles(() => ({
     listContainer: {
@@ -33,7 +35,12 @@ const FullstrideGames = (): Component => {
         }
     }, [dispatch, shouldFetch]);
 
-    const x = R.values(data);
+    const values = R.values(data);
+    const filteredData = R.sortWith([R.descend((item: IFullstrideGame) => {
+        const dateTimeA = moment(item.dateTime);
+        return dateTimeA.valueOf();
+    })], values);
+
     const list = R.reduce((acc, item) => {
         const game = FullstrideGame.create(item);
         const element = (
@@ -48,7 +55,7 @@ const FullstrideGames = (): Component => {
         );
 
         return R.append(element, acc);
-    }, [], x);
+    }, [], filteredData);
 
     return (
         <ScreenLayout

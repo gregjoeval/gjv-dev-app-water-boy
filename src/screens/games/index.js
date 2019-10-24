@@ -16,6 +16,7 @@ import {SportsHockey as SportsHockeyIcon} from '@material-ui/icons';
 import moment from 'moment';
 import {getCurrentSeason} from '../../libs/dateTimeHelpers';
 import * as uuid from 'uuid';
+import type {IFullstrideGame} from '../../models/fullstride-game';
 
 const useStyles = makeStyles(() => ({
     listContainer: {
@@ -39,6 +40,12 @@ const Games = (): Component => {
             setShouldFetch(false);
         }
     }, [dispatch, shouldFetch]);
+
+    const values = R.values(data);
+    const filteredData = R.sortWith([R.descend((item: IFullstrideGame) => {
+        const dateTimeA = moment(item.dateTime);
+        return dateTimeA.valueOf();
+    })], values);
 
     const list = R.reduce((acc, item) => {
         const model = SportingEvent.create(item);
@@ -67,7 +74,7 @@ const Games = (): Component => {
         );
 
         return R.append(element, acc);
-    }, [], R.values(data));
+    }, [], filteredData);
 
     return (
         <ScreenLayout
