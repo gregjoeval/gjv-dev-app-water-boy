@@ -48,7 +48,6 @@ const Home = (): Component => {
             <EventCard
                 dateTime={model.dateTime}
                 group={model.season}
-                id={model.id}
                 key={model.id}
                 location={model.location}
                 subtext={`${model.homeTeamScore} - ${model.awayTeamScore}`}

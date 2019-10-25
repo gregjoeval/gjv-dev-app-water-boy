@@ -4,6 +4,7 @@ import * as WaterBoyApi from '../vendor/water-boy-api-client/src/index';
 import {createDictionaryFromList} from '../libs/ramdaCookbook';
 import FullstrideGame from '../models/fullstride-game';
 import moment from 'moment';
+import {FullstrideGameFormat} from '../constants/dateTimeFormats';
 
 /**
  * sets the elements in the FullstrideGames resource
@@ -67,7 +68,7 @@ export const getFullstrideGamesAsync = () => async dispatch => {
         const service = new WaterBoyApi.FullstrideGameControllerApi(client);
         const apiModels = await service.fullstrideGameControllerFind();
         const fullstrideGames = (apiModels || []).map(model => {
-            const dateTime = moment(model.dateTime, 'MMM D h:mm: a').toISOString(true);
+            const dateTime = moment(model.dateTime, FullstrideGameFormat).toISOString(true);
             return FullstrideGame.create({...model, dateTime});
         });
         dispatch(updateFullstrideGames(fullstrideGames));

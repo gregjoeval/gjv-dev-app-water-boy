@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import AppHeader from '../../components/app-header';
 import ScreenLayout from '../../components/screen-layout';
 import ContentLayout from '../../components/content-layout';
-import {ViewModule as ViewModuleIcon} from '@material-ui/icons';
+import EventIcon from '@material-ui/icons/Event';
 import {getFullstrideGamesAsync} from '../../actions/fullstride-games';
 import * as R from 'ramda';
 import FullstrideGame from '../../models/fullstride-game';
@@ -48,7 +48,6 @@ const FullstrideGames = (): Component => {
                 dateTime={game.dateTime}
                 group={game.season}
                 id={game.number}
-                key={game.id}
                 location={game.rink}
                 subtext={game.teams}
             />
@@ -106,6 +105,6 @@ const FullstrideGames = (): Component => {
 
 export const FullstrideGamesPath = '/fullstride-games';
 export const FullstrideGamesName = 'Fullstride Games';
-export const FullstrideGamesIcon = ViewModuleIcon;
+export const FullstrideGamesIcon = EventIcon;
 export const FullstrideGamesScreen = Screen.create({Component: FullstrideGames, Path: FullstrideGamesPath, Name: FullstrideGamesName, Icon: FullstrideGamesIcon});
 export default FullstrideGames;

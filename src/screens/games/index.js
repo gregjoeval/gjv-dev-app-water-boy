@@ -64,7 +64,6 @@ const Games = (): Component => {
                 <EventCard
                     dateTime={model.dateTime}
                     group={model.season}
-                    id={model.id}
                     location={model.location}
                     onDelete={() => dispatch(deleteSportingEventAsync(model.id))}
                     onEdit={() => setOpenDialogId(`${dialogIdPrefix}${model.id}`)}
