@@ -12,7 +12,7 @@
  */
 
 import ApiClient from '../ApiClient';
-import PeopleFields from './PeopleFields';
+import LocationsFields from './LocationsFields';
 
 /**
  * The Filter1 model module.
@@ -52,7 +52,7 @@ class Filter1 {
                 obj['where'] = ApiClient.convertToType(data['where'], Object);
             }
             if (data.hasOwnProperty('fields')) {
-                obj['fields'] = PeopleFields.constructFromObject(data['fields']);
+                obj['fields'] = LocationsFields.constructFromObject(data['fields']);
             }
             if (data.hasOwnProperty('offset')) {
                 obj['offset'] = ApiClient.convertToType(data['offset'], 'Number');
@@ -79,7 +79,7 @@ class Filter1 {
 Filter1.prototype['where'] = undefined;
 
 /**
- * @member {module:model/PeopleFields} fields
+ * @member {module:model/LocationsFields} fields
  */
 Filter1.prototype['fields'] = undefined;
 

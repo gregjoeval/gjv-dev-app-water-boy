@@ -19,6 +19,7 @@ import Filter2 from './model/Filter2';
 import Filter3 from './model/Filter3';
 import Filter4 from './model/Filter4';
 import Filter5 from './model/Filter5';
+import Filter6 from './model/Filter6';
 import FullstrideGame from './model/FullstrideGame';
 import FullstridegamesFields from './model/FullstridegamesFields';
 import InlineObject from './model/InlineObject';
@@ -27,6 +28,8 @@ import InlineResponse2001 from './model/InlineResponse2001';
 import InlineResponse2001Headers from './model/InlineResponse2001Headers';
 import InlineResponse2002 from './model/InlineResponse2002';
 import InlineResponse2003 from './model/InlineResponse2003';
+import Location from './model/Location';
+import LocationsFields from './model/LocationsFields';
 import PeopleFields from './model/PeopleFields';
 import Person from './model/Person';
 import ScheduledJobModel from './model/ScheduledJobModel';
@@ -39,6 +42,7 @@ import UserGroup from './model/UserGroup';
 import UsergroupsFields from './model/UsergroupsFields';
 import UsersFields from './model/UsersFields';
 import FullstrideGameControllerApi from './api/FullstrideGameControllerApi';
+import LocationControllerApi from './api/LocationControllerApi';
 import PersonControllerApi from './api/PersonControllerApi';
 import PingControllerApi from './api/PingControllerApi';
 import ScheduledJobControllerApi from './api/ScheduledJobControllerApi';
@@ -123,6 +127,12 @@ export {
     Filter5,
 
     /**
+     * The Filter6 model constructor.
+     * @property {module:model/Filter6}
+     */
+    Filter6,
+
+    /**
      * The FullstrideGame model constructor.
      * @property {module:model/FullstrideGame}
      */
@@ -169,6 +179,18 @@ export {
      * @property {module:model/InlineResponse2003}
      */
     InlineResponse2003,
+
+    /**
+     * The Location model constructor.
+     * @property {module:model/Location}
+     */
+    Location,
+
+    /**
+     * The LocationsFields model constructor.
+     * @property {module:model/LocationsFields}
+     */
+    LocationsFields,
 
     /**
      * The PeopleFields model constructor.
@@ -241,6 +263,12 @@ export {
     * @property {module:api/FullstrideGameControllerApi}
     */
     FullstrideGameControllerApi,
+
+    /**
+    * The LocationControllerApi service constructor.
+    * @property {module:api/LocationControllerApi}
+    */
+    LocationControllerApi,
 
     /**
     * The PersonControllerApi service constructor.

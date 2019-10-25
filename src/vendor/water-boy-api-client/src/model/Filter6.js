@@ -12,21 +12,21 @@
  */
 
 import ApiClient from '../ApiClient';
-import UsergroupsFields from './UsergroupsFields';
+import UsersFields from './UsersFields';
 
 /**
- * The Filter5 model module.
- * @module model/Filter5
+ * The Filter6 model module.
+ * @module model/Filter6
  * @version 1.0.0
  */
-class Filter5 {
+class Filter6 {
     /**
-     * Constructs a new <code>Filter5</code>.
-     * @alias module:model/Filter5
+     * Constructs a new <code>Filter6</code>.
+     * @alias module:model/Filter6
      */
     constructor() { 
         
-        Filter5.initialize(this);
+        Filter6.initialize(this);
     }
 
     /**
@@ -38,21 +38,21 @@ class Filter5 {
     }
 
     /**
-     * Constructs a <code>Filter5</code> from a plain JavaScript object, optionally creating a new instance.
+     * Constructs a <code>Filter6</code> from a plain JavaScript object, optionally creating a new instance.
      * Copies all relevant properties from <code>data</code> to <code>obj</code> if supplied or a new instance if not.
      * @param {Object} data The plain JavaScript object bearing properties of interest.
-     * @param {module:model/Filter5} obj Optional instance to populate.
-     * @return {module:model/Filter5} The populated <code>Filter5</code> instance.
+     * @param {module:model/Filter6} obj Optional instance to populate.
+     * @return {module:model/Filter6} The populated <code>Filter6</code> instance.
      */
     static constructFromObject(data, obj) {
         if (data) {
-            obj = obj || new Filter5();
+            obj = obj || new Filter6();
 
             if (data.hasOwnProperty('where')) {
                 obj['where'] = ApiClient.convertToType(data['where'], Object);
             }
             if (data.hasOwnProperty('fields')) {
-                obj['fields'] = UsergroupsFields.constructFromObject(data['fields']);
+                obj['fields'] = UsersFields.constructFromObject(data['fields']);
             }
             if (data.hasOwnProperty('offset')) {
                 obj['offset'] = ApiClient.convertToType(data['offset'], 'Number');
@@ -76,37 +76,37 @@ class Filter5 {
 /**
  * @member {Object} where
  */
-Filter5.prototype['where'] = undefined;
+Filter6.prototype['where'] = undefined;
 
 /**
- * @member {module:model/UsergroupsFields} fields
+ * @member {module:model/UsersFields} fields
  */
-Filter5.prototype['fields'] = undefined;
+Filter6.prototype['fields'] = undefined;
 
 /**
  * @member {Number} offset
  */
-Filter5.prototype['offset'] = undefined;
+Filter6.prototype['offset'] = undefined;
 
 /**
  * @member {Number} limit
  */
-Filter5.prototype['limit'] = undefined;
+Filter6.prototype['limit'] = undefined;
 
 /**
  * @member {Number} skip
  */
-Filter5.prototype['skip'] = undefined;
+Filter6.prototype['skip'] = undefined;
 
 /**
  * @member {Array.<String>} order
  */
-Filter5.prototype['order'] = undefined;
+Filter6.prototype['order'] = undefined;
 
 
 
 
 
 
-export default Filter5;
+export default Filter6;
 

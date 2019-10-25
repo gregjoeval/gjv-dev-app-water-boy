@@ -12,7 +12,7 @@
  */
 
 import ApiClient from '../ApiClient';
-import TeamsFields from './TeamsFields';
+import SportingeventsFields from './SportingeventsFields';
 
 /**
  * The Filter3 model module.
@@ -52,7 +52,7 @@ class Filter3 {
                 obj['where'] = ApiClient.convertToType(data['where'], Object);
             }
             if (data.hasOwnProperty('fields')) {
-                obj['fields'] = TeamsFields.constructFromObject(data['fields']);
+                obj['fields'] = SportingeventsFields.constructFromObject(data['fields']);
             }
             if (data.hasOwnProperty('offset')) {
                 obj['offset'] = ApiClient.convertToType(data['offset'], 'Number');
@@ -79,7 +79,7 @@ class Filter3 {
 Filter3.prototype['where'] = undefined;
 
 /**
- * @member {module:model/TeamsFields} fields
+ * @member {module:model/SportingeventsFields} fields
  */
 Filter3.prototype['fields'] = undefined;
 

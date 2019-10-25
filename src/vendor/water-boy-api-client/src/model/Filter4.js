@@ -12,7 +12,7 @@
  */
 
 import ApiClient from '../ApiClient';
-import UsergroupsFields from './UsergroupsFields';
+import TeamsFields from './TeamsFields';
 
 /**
  * The Filter4 model module.
@@ -52,7 +52,7 @@ class Filter4 {
                 obj['where'] = ApiClient.convertToType(data['where'], Object);
             }
             if (data.hasOwnProperty('fields')) {
-                obj['fields'] = UsergroupsFields.constructFromObject(data['fields']);
+                obj['fields'] = TeamsFields.constructFromObject(data['fields']);
             }
             if (data.hasOwnProperty('offset')) {
                 obj['offset'] = ApiClient.convertToType(data['offset'], 'Number');
@@ -79,7 +79,7 @@ class Filter4 {
 Filter4.prototype['where'] = undefined;
 
 /**
- * @member {module:model/UsergroupsFields} fields
+ * @member {module:model/TeamsFields} fields
  */
 Filter4.prototype['fields'] = undefined;
 
