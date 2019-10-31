@@ -1,5 +1,5 @@
 export const FullstrideGameFormat = 'MMM D h:mm: a';
-export const EventCardFormat = 'ddd (MMM D) LT';
+export const EventCardFormat = 'MMM D (ddd) LT';
 
 const dateTimeFormats = {
     FullstrideGameFormat,

@@ -1,6 +1,6 @@
 // @flow
 import React, {Component} from 'react';
-import {Card, CardActions, CardContent, Typography, Button} from '@material-ui/core';
+import {Card, CardActions, CardContent, Typography, CardHeader} from '@material-ui/core';
 import {makeStyles} from '@material-ui/styles';
 import ContentLayout from '../content-layout';
 import moment from 'moment';
@@ -18,14 +18,22 @@ type EventCardProps = {
     dateTime: string,
     location: string,
     subtext: string,
-    onEdit?: Function,
-    onDelete?: Function
+    actions?: Node,
+    headerAction?: Node,
 };
 
-const EventCard = ({children, group, dateTime, location, subtext, onEdit, onDelete}: EventCardProps): Component => {
+const EventCard = ({children, group, dateTime, location, subtext, actions, headerAction}: EventCardProps): Component => {
     const classes = useStyles();
     return (
         <Card className={classes.card}>
+            <CardHeader
+                action={headerAction}
+                title={(
+                    <Typography>
+                        {moment(dateTime).format(EventCardFormat)}
+                    </Typography>
+                )}
+            />
             <CardContent>
                 <ContentLayout
                     direction={'row'}
@@ -33,7 +41,7 @@ const EventCard = ({children, group, dateTime, location, subtext, onEdit, onDele
                     wrap={'wrap'}
                 >
                     <Typography variant={'body2'}>
-                        {moment(dateTime).format(EventCardFormat)}
+                        {location}
                     </Typography>
                     <Typography variant={'body2'}>
                         {group}
@@ -45,36 +53,16 @@ const EventCard = ({children, group, dateTime, location, subtext, onEdit, onDele
                     wrap={'wrap'}
                 >
                     <Typography variant={'body2'}>
-                        {location}
-                    </Typography>
-                    <Typography variant={'body2'}>
                         {subtext}
                     </Typography>
                 </ContentLayout>
                 {children}
             </CardContent>
             {
-                onEdit || onDelete
+                actions && actions.length
                     ? (
                         <CardActions>
-                            {
-                                onEdit
-                                    ? (
-                                        <Button onClick={onEdit}>
-                                            {'edit'}
-                                        </Button>
-                                    )
-                                    : null
-                            }
-                            {
-                                onDelete
-                                    ? (
-                                        <Button onClick={onDelete}>
-                                            {'delete'}
-                                        </Button>
-                                    )
-                                    : null
-                            }
+                            {actions}
                         </CardActions>
                     )
                     : null
