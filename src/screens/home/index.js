@@ -10,7 +10,7 @@ import {makeStyles} from '@material-ui/styles';
 import {useDispatch, useSelector} from 'react-redux';
 import * as R from 'ramda';
 import EventCard from '../../components/event-card';
-import {getSportingEventsAsync} from '../../actions/sporting-events';
+import {getSportingEventsAsync} from '../../actions/sportingEvents';
 import moment from 'moment';
 import SportingEvent from '../../models/sporting-event';
 import type {ISportingEvent} from '../../models/sporting-event';

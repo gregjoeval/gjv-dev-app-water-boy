@@ -1,12 +1,12 @@
 // @flow
-import React, {Component, useEffect, useState} from 'react';
-import {Typography, Button, CircularProgress} from '@material-ui/core';
+import React, {Component, useEffect, useState, Fragment} from 'react';
+import {Typography, Button, CircularProgress, IconButton} from '@material-ui/core';
 import {useDispatch, useSelector} from 'react-redux';
 import AppHeader from '../../components/app-header';
 import ScreenLayout from '../../components/screen-layout';
 import ContentLayout from '../../components/content-layout';
 import EventIcon from '@material-ui/icons/Event';
-import {getFullstrideGamesAsync} from '../../actions/fullstride-games';
+import {getFullstrideGamesAsync} from '../../actions/fullstrideGames';
 import * as R from 'ramda';
 import FullstrideGame from '../../models/fullstride-game';
 import Screen from '../../models/screen';
@@ -14,6 +14,9 @@ import EventCard from '../../components/event-card';
 import {makeStyles} from '@material-ui/styles';
 import type {IFullstrideGame} from '../../models/fullstride-game';
 import moment from 'moment';
+import FullstrideGameDialogMerge from '../../components/fullstride-game-dialog-merge';
+import {postSportingEventAsync} from '../../actions/sportingEvents';
+import CallMergeIcon from '@material-ui/icons/CallMerge';
 
 const useStyles = makeStyles(() => ({
     listContainer: {
@@ -27,6 +30,9 @@ const FullstrideGames = (): Component => {
     const {loading, data, error} = useSelector(state => state.fullstrideGames);
     const dispatch = useDispatch();
     const [shouldFetch, setShouldFetch] = useState(true);
+
+    const [openDialogId, setOpenDialogId] = useState(null);
+    const dialogIdPrefix = 'fullstride-game-dialog-';
 
     useEffect(() => {
         if (shouldFetch) {
@@ -42,15 +48,35 @@ const FullstrideGames = (): Component => {
     })], values);
 
     const list = R.reduce((acc, item) => {
-        const game = FullstrideGame.create(item);
+        const model = FullstrideGame.create(item);
         const element = (
-            <EventCard
-                dateTime={game.dateTime}
-                group={game.season}
-                id={game.number}
-                location={game.rink}
-                subtext={game.teams}
-            />
+            <Fragment>
+                <FullstrideGameDialogMerge
+                    id={`${dialogIdPrefix}${model.id}`}
+                    model={model}
+                    onClose={() => setOpenDialogId(null)}
+                    onSubmit={(value) => {
+                        dispatch(postSportingEventAsync(value));
+                        setOpenDialogId(null);
+                    }}
+                    open={Boolean(openDialogId === `${dialogIdPrefix}${model.id}`)}
+                />
+                <EventCard
+                    dateTime={model.dateTime}
+                    group={model.season}
+                    headerAction={(
+                        <IconButton
+                            onClick={() => setOpenDialogId(`${dialogIdPrefix}${model.id}`)}
+                            size={'small'}
+                        >
+                            <CallMergeIcon/>
+                        </IconButton>
+                    )}
+                    id={model.number}
+                    location={model.rink}
+                    subtext={model.teams}
+                />
+            </Fragment>
         );
 
         return R.append(element, acc);
@@ -106,5 +132,5 @@ const FullstrideGames = (): Component => {
 export const FullstrideGamesPath = '/fullstride-games';
 export const FullstrideGamesName = 'Fullstride Games';
 export const FullstrideGamesIcon = EventIcon;
-export const FullstrideGamesScreen = Screen.create({Component: FullstrideGames, Path: FullstrideGamesPath, Name: FullstrideGamesName, Icon: FullstrideGamesIcon});
+export const FullstrideGamesScreen = Screen.create({Component: FullstrideGames, Path: FullstrideGamesPath, Name: FullstrideGamesName, Icon: FullstrideGamesIcon, hasAuth: true});
 export default FullstrideGames;

@@ -10,7 +10,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import * as R from 'ramda';
 import EventCard from '../../components/event-card';
 import SportingEvent from '../../models/sporting-event';
-import {deleteSportingEventAsync, getSportingEventsAsync, postSportingEventAsync, putSportingEventAsync} from '../../actions/sporting-events';
+import {deleteSportingEventAsync, getSportingEventsAsync, postSportingEventAsync, putSportingEventAsync} from '../../actions/sportingEvents';
 import SportingEventDialogEdit from '../../components/sporting-event-dialog-edit';
 import {SportsHockey as SportsHockeyIcon} from '@material-ui/icons';
 import moment from 'moment';
@@ -62,11 +62,27 @@ const Games = (): Component => {
                     open={Boolean(openDialogId === `${dialogIdPrefix}${model.id}`)}
                 />
                 <EventCard
+                    actions={[
+                        (
+                            <Button
+                                key={`${dialogIdPrefix}${model.id}`}
+                                onClick={() => setOpenDialogId(`${dialogIdPrefix}${model.id}`)}
+                            >
+                                {'edit'}
+                            </Button>
+                        ),
+                        (
+                            <Button
+                                key={`delete-${model.id}`}
+                                onClick={() => dispatch(deleteSportingEventAsync(model.id))}
+                            >
+                                {'delete'}
+                            </Button>
+                        )
+                    ]}
                     dateTime={model.dateTime}
                     group={model.season}
                     location={model.location}
-                    onDelete={() => dispatch(deleteSportingEventAsync(model.id))}
-                    onEdit={() => setOpenDialogId(`${dialogIdPrefix}${model.id}`)}
                     subtext={`${model.homeTeamScore} - ${model.awayTeamScore}`}
                 />
             </Fragment>

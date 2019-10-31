@@ -6,7 +6,7 @@ import {DateTimePicker} from '@material-ui/pickers';
 import moment from 'moment';
 import ContentLayout from '../content-layout';
 
-type ThemeMenuProps = {
+type SportingEventDialogEditProps = {
     open: boolean,
     id: string,
     model?: SportingEvent,
@@ -14,13 +14,14 @@ type ThemeMenuProps = {
     onSubmit: (SportingEvent) => void
 };
 
-const SportingEventDialogEdit = ({open, id, model, onClose, onSubmit}: ThemeMenuProps) => {
+const SportingEventDialogEdit = ({open, id, model, onClose, onSubmit}: SportingEventDialogEditProps) => {
     const [sportingEvent, setSportingEvent] = useState(SportingEvent.create(model));
     const handleChange = R.curry((propPath, value) => {
         const path = [].concat(propPath);
         const newModel = R.assocPath(path, value, sportingEvent);
         setSportingEvent(newModel);
     });
+    const isSubmitDisabled = !SportingEvent.isValid(sportingEvent) || R.equals(sportingEvent, model);
     return (
         <Dialog
             aria-labelledby={'form-dialog-title'}
@@ -116,7 +117,7 @@ const SportingEventDialogEdit = ({open, id, model, onClose, onSubmit}: ThemeMenu
                 </Button>
                 <Button
                     color={'primary'}
-                    disabled={!SportingEvent.isValid(sportingEvent)}
+                    disabled={isSubmitDisabled}
                     onClick={() => onSubmit(sportingEvent)}
                 >
                     {'Submit'}
