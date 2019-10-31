@@ -44,7 +44,6 @@
     "redux": "^4.0.4",
     "redux-logger": "^3.0.6",
     "redux-persist": "^5.10.0",
-    "redux-starter-kit": "^0.7.0",
     "redux-thunk": "^2.3.0",
     "superagent": "3.7.0",
     "uuid": "^3.3.3"

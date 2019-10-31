@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import {createReducer} from 'redux-starter-kit';
+import createReducer from '../libs/createReducer';
 import Action from '../models/action';
 
 /**
