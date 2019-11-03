@@ -36,7 +36,7 @@ const makeReducer = <TActionTypes: any, TInput: any, T: any> (
     const actionTypes = createActionTypes(resourceName, verbs);
     const actionTypesKeys = R.keys(actionTypes);
 
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV !== 'production') {
         /* eslint-disable no-console */
         console.groupCollapsed(resourceName);
         console.group('actionTypes');

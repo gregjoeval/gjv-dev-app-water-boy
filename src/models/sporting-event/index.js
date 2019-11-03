@@ -1,6 +1,7 @@
 // @flow
 import * as R from 'ramda';
 import * as uuid from 'uuid';
+import {SportingEvent as SportingEventApiModel} from '@gjv-dev/api-client-water-boy';
 
 export interface ISportingEvent {
     id: string;
@@ -15,7 +16,11 @@ export interface ISportingEvent {
     season?: string;
 }
 
-const create = (args: ISportingEvent|Object): ISportingEvent => {
+export interface ISportingEventViewModel extends ISportingEvent {
+    edited?: boolean;
+}
+
+const create = (args?: $Shape<ISportingEventViewModel>): ISportingEventViewModel => {
     const {
         id,
         dateTime,
@@ -26,7 +31,8 @@ const create = (args: ISportingEvent|Object): ISportingEvent => {
         awayTeamScore,
         league,
         division,
-        season
+        season,
+        edited
     } = args || {};
 
     const o = {
@@ -39,13 +45,20 @@ const create = (args: ISportingEvent|Object): ISportingEvent => {
         awayTeamScore,
         league,
         division,
-        season
+        season,
+        edited
     };
 
     return Object.freeze(o);
 };
 
-const isValid = (model: ISportingEvent): boolean => {
+const createApiModel = (args?: $Shape<ISportingEventViewModel>): SportingEventApiModel => {
+    const model = create(args);
+    const o = R.omit(['edited'], model); // omit view model props
+    return Object.freeze(o);
+};
+
+const isValid = (model?: $Shape<ISportingEvent>): boolean => {
     const keys = R.keys(model);
     const isModelValid = R.reduce((acc, key) => {
         const result = Boolean(model[key]);
@@ -58,6 +71,7 @@ const isValid = (model: ISportingEvent): boolean => {
 
 const SportingEvent = {
     create,
+    createApiModel,
     isValid
 };
 

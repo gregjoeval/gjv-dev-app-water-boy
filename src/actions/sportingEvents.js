@@ -21,6 +21,23 @@ export const setSportingEvents = (sportingEvents) => {
 export const resetSportingEvents = () => Action.create(actionTypes.RESET);
 
 /**
+ * updates multiple sportingEvents from a data source
+ * @param {Array<ISportingEvent>} sportingEvents -
+ * @return {{payload: *, type: string}} - action
+ */
+export const hydrateSportingEvents = (sportingEvents) => {
+    const payload = createDictionaryFromList(sportingEvents);
+    return Action.create(actionTypes.HYDRATE, payload);
+};
+
+/**
+ * updates a single sportingEvent from a data source
+ * @param {ISportingEvent} sportingEvent -
+ * @return {{payload: *, type: string}} - action
+ */
+export const hydrateSportingEvent = (sportingEvent) => hydrateSportingEvents([sportingEvent]);
+
+/**
  * updates multiple sportingEvents
  * @param {Array<ISportingEvent>} sportingEvents -
  * @return {{payload: *, type: string}} - action
@@ -53,6 +70,24 @@ export const deleteSportingEvents = (ids) => Action.create(actionTypes.DELETE, i
 export const deleteSportingEvent = (id) => deleteSportingEvents([id]);
 
 /**
+ * undo last SportingEvent change
+ * @return {{payload: *, type: string}} - action
+ */
+export const undoSportingEvent = () => Action.create(actionTypes.UNDO);
+
+/**
+ * redo last SportingEvent change
+ * @return {{payload: *, type: string}} - action
+ */
+export const redoSportingEvent = () => Action.create(actionTypes.REDO);
+
+/**
+ * cancel option to undo/redo last SportingEvent change
+ * @return {{payload: *, type: string}} - action
+ */
+export const cancelUndoableSportingEvent = () => Action.create(actionTypes.CANCEL);
+
+/**
  * fetch SportingEvents from the data source
  * @returns {Function} -
  */
@@ -61,7 +96,7 @@ export const getSportingEventsAsync = () => async dispatch => {
 
     try {
         const models = await SportingEvents.get();
-        dispatch(updateSportingEvents(models));
+        dispatch(hydrateSportingEvents(models));
     } catch (e) {
         dispatch(Action.create(actionTypes.FAIL, Error('Failed to fetch.'), true));
     }
@@ -77,7 +112,7 @@ export const postSportingEventAsync = (model: ISportingEvent) => async dispatch 
 
     try {
         const newModel = await SportingEvents.post(model);
-        dispatch(updateSportingEvent(newModel));
+        dispatch(hydrateSportingEvent(newModel));
     } catch (e) {
         dispatch(Action.create(actionTypes.FAIL, Error('Failed to post.'), true));
     }
@@ -93,7 +128,7 @@ export const putSportingEventAsync = (model: ISportingEvent) => async dispatch =
 
     try {
         await SportingEvents.put(model);
-        dispatch(updateSportingEvent(model));
+        dispatch(hydrateSportingEvent(model));
     } catch (e) {
         dispatch(Action.create(actionTypes.FAIL, Error('Failed to put.'), true));
     }
@@ -109,7 +144,7 @@ export const patchSportingEventAsync = (model: ISportingEvent) => async dispatch
 
     try {
         await SportingEvents.patch(model);
-        dispatch(updateSportingEvent(model));
+        dispatch(hydrateSportingEvent(model));
     } catch (e) {
         dispatch(Action.create(actionTypes.FAIL, Error('Failed to patch.'), true));
     }

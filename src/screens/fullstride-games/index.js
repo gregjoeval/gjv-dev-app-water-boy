@@ -10,23 +10,14 @@ import {getFullstrideGamesAsync} from '../../actions/fullstrideGames';
 import * as R from 'ramda';
 import FullstrideGame from '../../models/fullstride-game';
 import Screen from '../../models/screen';
-import EventCard from '../../components/event-card';
-import {makeStyles} from '@material-ui/styles';
+import EventCard, {EventCardPlaceholder} from '../../components/event-card';
 import type {IFullstrideGame} from '../../models/fullstride-game';
 import moment from 'moment';
 import FullstrideGameDialogMerge from '../../components/fullstride-game-dialog-merge';
 import {postSportingEventAsync} from '../../actions/sportingEvents';
 import CallMergeIcon from '@material-ui/icons/CallMerge';
 
-const useStyles = makeStyles(() => ({
-    listContainer: {
-        marginLeft: 'auto',
-        marginRight: 'auto'
-    }
-}));
-
 const FullstrideGames = (): Component => {
-    const classes = useStyles();
     const {loading, data, error} = useSelector(state => state.fullstrideGames);
     const dispatch = useDispatch();
     const [shouldFetch, setShouldFetch] = useState(true);
@@ -50,7 +41,7 @@ const FullstrideGames = (): Component => {
     const list = R.reduce((acc, item) => {
         const model = FullstrideGame.create(item);
         const element = (
-            <Fragment>
+            <Fragment key={model.id}>
                 <FullstrideGameDialogMerge
                     id={`${dialogIdPrefix}${model.id}`}
                     model={model}
@@ -106,24 +97,22 @@ const FullstrideGames = (): Component => {
                 >
                     {'refresh'}
                 </Button>
-                {
-                    loading
-                        ? <CircularProgress/>
-                        : (
-                            <ContentLayout
-                                containerClassName={classes.listContainer}
-                                direction={'row'}
-                                justify={'center'}
-                                md={'auto'}
-                                sm={6}
-                                spacing={1}
-                                wrap={'wrap'}
-                                xs={12}
-                            >
-                                {list}
-                            </ContentLayout>
-                        )
-                }
+                <ContentLayout
+                    direction={'row'}
+                    justify={'flex-start'}
+                    md={4}
+                    sm={6}
+                    spacing={1}
+                    wrap={'wrap'}
+                    xl={3}
+                    xs={12}
+                >
+                    {
+                        loading
+                            ? R.repeat(<EventCardPlaceholder/>, 12)
+                            : list
+                    }
+                </ContentLayout>
             </ContentLayout>
         </ScreenLayout>
     );

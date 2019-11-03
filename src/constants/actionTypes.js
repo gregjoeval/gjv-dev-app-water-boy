@@ -27,11 +27,16 @@
  **/
 
 export const VERBS = {
+    CANCEL: 'CANCEL',
     DELETE: 'DELETE',
     FAIL: 'FAIL',
+    HYDRATE: 'HYDRATE',
+    REDO: 'REDO',
+    REMOVE: 'REMOVE',
     RESET: 'RESET',
     REQUEST: 'REQUEST',
     SET: 'SET',
+    UNDO: 'UNDO',
     UPDATE: 'UPDATE'
 };
 

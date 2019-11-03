@@ -16,3 +16,13 @@ export const getCurrentSeason = () => {
             return 'Unknown';
     }
 };
+
+export const getTimeFromNow = (iso: string, unit?: string) => {
+    if (!iso) {
+        return 0;
+    }
+
+    const now = moment();
+    const then = moment(iso);
+    return now.diff(then, unit);
+};

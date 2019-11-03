@@ -1,10 +1,11 @@
 // @flow
 import React, {Component} from 'react';
 import {Card, CardActions, CardContent, Typography, CardHeader} from '@material-ui/core';
-import {makeStyles} from '@material-ui/styles';
+import {makeStyles, useTheme} from '@material-ui/styles';
 import ContentLayout from '../content-layout';
 import moment from 'moment';
 import {EventCardFormat} from '../../constants/dateTimeFormats';
+import {Skeleton} from '@material-ui/lab';
 
 const useStyles = makeStyles((theme) => ({
     card: {
@@ -12,17 +13,33 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+type EventCardPlaceholderProps = {
+    withActions?: boolean
+}
+
+export const EventCardPlaceholder = ({withActions = false}: EventCardPlaceholderProps) => {
+    const theme = useTheme();
+    const heightCoefficient = withActions ? 22.5 : 17;
+    return (
+        <Skeleton
+            height={theme.spacing(heightCoefficient)}
+            variant={'rect'}
+        />
+    );
+};
+
 type EventCardProps = {
     children?: Array<Node> | Node,
     group: string,
+    subgroup?: string,
     dateTime: string,
     location: string,
-    subtext: string,
+    subtext?: string,
     actions?: Node,
     headerAction?: Node,
 };
 
-const EventCard = ({children, group, dateTime, location, subtext, actions, headerAction}: EventCardProps): Component => {
+const EventCard = ({children, group, subgroup, dateTime, location, subtext, actions, headerAction}: EventCardProps): Component => {
     const classes = useStyles();
     return (
         <Card className={classes.card}>
@@ -54,6 +71,9 @@ const EventCard = ({children, group, dateTime, location, subtext, actions, heade
                 >
                     <Typography variant={'body2'}>
                         {subtext}
+                    </Typography>
+                    <Typography variant={'body2'}>
+                        {subgroup}
                     </Typography>
                 </ContentLayout>
                 {children}

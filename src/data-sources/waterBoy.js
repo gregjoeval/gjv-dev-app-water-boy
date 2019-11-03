@@ -1,12 +1,12 @@
-import {Configuration, FullstrideGameControllerApi, SportingEventControllerApi} from '@gregjoeval/api-client-water-boy';
+import {Configuration, FullstrideGameControllerApi, SportingEventControllerApi} from '@gjv-dev/api-client-water-boy';
 import moment from 'moment';
 import {FullstrideGameFormat} from '../constants/dateTimeFormats';
 import FullstrideGame from '../models/fullstride-game';
 import * as R from 'ramda';
 import type {IFullstrideGame} from '../models/fullstride-game';
-import type {ConfigurationParameters, FullstrideGameControllerApiType, SportingEventControllerApiType} from '@gregjoeval/api-client-water-boy';
+import type {ConfigurationParameters, FullstrideGameControllerApiType, SportingEventControllerApiType} from '@gjv-dev/api-client-water-boy';
 import SportingEvent from '../models/sporting-event';
-import type {ISportingEvent} from '../models/sporting-event';
+import type {ISportingEvent, ISportingEventViewModel} from '../models/sporting-event';
 
 /**
  * factory function for service configuration
@@ -59,24 +59,27 @@ export const FullstrideGames = Object.freeze({
 });
 
 export const SportingEvents = Object.freeze({
-    get: async (): Array<ISportingEvent> => {
+    get: async (): Array<ISportingEvent|ISportingEventViewModel> => {
         const service = createSportingEventService();
-        const apiModels = await service.sportingEventControllerFind();
-        return R.map(model => SportingEvent.create(model), apiModels || []);
+        const data = await service.sportingEventControllerFind();
+        return R.map(model => SportingEvent.create(model), data || []);
     },
-    post: async (model: ISportingEvent): ISportingEvent => {
+    post: async (model: ISportingEvent|ISportingEventViewModel): ISportingEventViewModel => {
         const service = createSportingEventService();
-        const apiModel = await service.sportingEventControllerCreate(model);
-        return SportingEvent.create(apiModel);
+        const apiModel = SportingEvent.createApiModel(model);
+        const data = await service.sportingEventControllerCreate(apiModel);
+        return SportingEvent.create(data);
     },
-    put: async (model: ISportingEvent): ISportingEvent => {
+    put: async (model: ISportingEvent|ISportingEventViewModel): ISportingEventViewModel => {
         const service = createSportingEventService();
-        await service.sportingEventControllerReplaceById(model.id, model);
+        const apiModel = SportingEvent.createApiModel(model);
+        await service.sportingEventControllerReplaceById(apiModel.id, apiModel);
         return SportingEvent.create(model);
     },
-    patch: async (model: ISportingEvent): ISportingEvent => {
+    patch: async (model: ISportingEvent|ISportingEventViewModel): ISportingEventViewModel => {
         const service = createSportingEventService();
-        await service.sportingEventControllerUpdateById(model.id, model);
+        const apiModel = SportingEvent.createApiModel(model);
+        await service.sportingEventControllerUpdateById(apiModel.id, apiModel);
         return SportingEvent.create(model);
     },
     delete: async (id: string): null => {
