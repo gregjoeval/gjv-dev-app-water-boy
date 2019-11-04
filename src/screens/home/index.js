@@ -1,6 +1,6 @@
 // @flow
 import React, {Component, useEffect, useState} from 'react';
-import {Button, CircularProgress, Typography} from '@material-ui/core';
+import {Button, Typography} from '@material-ui/core';
 import AppHeader from '../../components/app-header';
 import ScreenLayout from '../../components/screen-layout';
 import ContentLayout from '../../components/content-layout';
@@ -84,7 +84,11 @@ const Home = (): Component => {
                 >
                     {
                         loading
-                            ? R.repeat(<EventCardPlaceholder/>, 12)
+                            ? R.repeat(
+                                <EventCardPlaceholder
+                                    key={'EventCardPlaceholder'}
+                                />
+                                , 12)
                             : (
                                 list
                             )

@@ -1,6 +1,6 @@
 // @flow
 import React, {Component, useEffect, useState, Fragment} from 'react';
-import {Typography, Button, CircularProgress, IconButton} from '@material-ui/core';
+import {Typography, Button, IconButton} from '@material-ui/core';
 import {useDispatch, useSelector} from 'react-redux';
 import AppHeader from '../../components/app-header';
 import ScreenLayout from '../../components/screen-layout';
@@ -109,7 +109,11 @@ const FullstrideGames = (): Component => {
                 >
                     {
                         loading
-                            ? R.repeat(<EventCardPlaceholder/>, 12)
+                            ? R.repeat(
+                                <EventCardPlaceholder
+                                    key={'EventCardPlaceholder'}
+                                />
+                                , 12)
                             : list
                     }
                 </ContentLayout>

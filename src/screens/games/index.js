@@ -1,6 +1,6 @@
 // @flow
-import React, {Component, Fragment, useEffect, useState} from 'react';
-import {Button, IconButton, Snackbar, Typography} from '@material-ui/core';
+import React, {Component, Fragment, useState} from 'react';
+import {Button, IconButton, Snackbar, Typography, Tooltip} from '@material-ui/core';
 import AppHeader from '../../components/app-header';
 import ScreenLayout from '../../components/screen-layout';
 import ContentLayout from '../../components/content-layout';
@@ -16,41 +16,30 @@ import moment from 'moment';
 import {getCurrentSeason, getTimeFromNow} from '../../libs/dateTimeHelpers';
 import * as uuid from 'uuid';
 import type {IFullstrideGame} from '../../models/fullstride-game';
-import Polling from '../../libs/polling';
+import usePolling from '../../libs/usePolling';
+import NewReleasesIcon from '@material-ui/icons/NewReleases';
 
 const Games = (): Component => {
     const {loading, data, error, lastUpdated, past, canceled} = useSelector(state => state.sportingEvents);
     const dispatch = useDispatch();
-    const [shouldFetch, setShouldFetch] = useState(!lastUpdated);
+
+    const [nearestFutureEventId, setNearestFutureEventId] = useState(null);
+    const [timeUntilNextEvent, setTimeUntilNextEvent] = useState(null);
 
     const [openDialogId, setOpenDialogId] = useState(null);
     const dialogIdPrefix = 'sporting-event-dialog-';
-
-    useEffect(() => {
-        if (!shouldFetch) {
-            Polling.start(() => {
-                const minutesSinceLastUpdate = getTimeFromNow(lastUpdated, 'minutes');
-                if (minutesSinceLastUpdate >= 5) {
-                    setShouldFetch(true);
-                }
-            }, 60 * 1000);
-        }
-
-        if (shouldFetch) {
-            dispatch(getSportingEventsAsync());
-            setShouldFetch(false);
-        }
-
-        return () => {
-            Polling.stop();
-        };
-    }, [dispatch, lastUpdated, shouldFetch]);
 
     const values = R.values(data);
     const filteredData = R.sortWith([R.descend((item: IFullstrideGame) => {
         const dateTimeA = moment(item.dateTime);
         return dateTimeA.valueOf();
     })], values);
+
+    usePolling(() => {
+        if (!lastUpdated || getTimeFromNow(lastUpdated, 'minutes') >= 15) {
+            dispatch(getSportingEventsAsync());
+        }
+    }, 60 * 1000);
 
     const updatedSnackBar = (
         <Snackbar
@@ -99,6 +88,14 @@ const Games = (): Component => {
 
     const list = R.reduce((acc, item) => {
         const model = SportingEvent.create(item);
+        const timeFromNow = getTimeFromNow(model.dateTime, 'hours');
+        if (timeFromNow < 0) {
+            if (!timeUntilNextEvent || timeFromNow < timeUntilNextEvent) {
+                setNearestFutureEventId(model.id);
+                setTimeUntilNextEvent(timeFromNow);
+            }
+        }
+
         const element = (
             <Fragment key={model.id}>
                 <SportingEventDialogEdit
@@ -143,6 +140,15 @@ const Games = (): Component => {
                     ]}
                     dateTime={model.dateTime}
                     group={model.season}
+                    headerAction={(
+                        model.id === nearestFutureEventId && (
+                            <Tooltip title={moment(model.dateTime).fromNow()}>
+                                <IconButton size={'small'}>
+                                    <NewReleasesIcon/>
+                                </IconButton>
+                            </Tooltip>
+                        )
+                    )}
                     location={model.location}
                     subgroup={model.division}
                     subtext={`${model.homeTeamScore} - ${model.awayTeamScore}`}
@@ -197,12 +203,6 @@ const Games = (): Component => {
                             {'create'}
                         </Button>
                     </Fragment>
-                    <Button
-                        href={null}
-                        onClick={() => setShouldFetch(true)}
-                    >
-                        {'refresh'}
-                    </Button>
                 </ContentLayout>
                 <ContentLayout
                     direction={'row'}
@@ -216,7 +216,12 @@ const Games = (): Component => {
                 >
                     {
                         loading
-                            ? R.repeat(<EventCardPlaceholder withActions={true}/>, 12)
+                            ? R.repeat(
+                                <EventCardPlaceholder
+                                    key={'EventCardPlaceholder'}
+                                    withActions={true}
+                                />
+                                , 12)
                             : (
                                 list
                             )
