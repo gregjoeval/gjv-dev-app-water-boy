@@ -36,6 +36,7 @@
     "@material-ui/styles": "^4.5.2",
     "mdi-material-ui": "^6.8.0",
     "moment": "^2.24.0",
+    "portable-fetch": "^3.0.0",
     "ramda": "^0.26.1",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
