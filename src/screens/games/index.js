@@ -36,10 +36,8 @@ const Games = (): Component => {
     })], values);
 
     usePolling(() => {
-        if (!lastUpdated || getTimeFromNow(lastUpdated, 'minutes') >= 15) {
-            dispatch(getSportingEventsAsync());
-        }
-    }, 60 * 1000);
+        dispatch(getSportingEventsAsync());
+    }, 10 * 60 * 1000);
 
     const updatedSnackBar = (
         <Snackbar

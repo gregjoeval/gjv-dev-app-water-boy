@@ -10,11 +10,13 @@ import React, {useState, useEffect, useCallback} from 'react';
  */
 export function usePolling(callback: Function, interval: number) {
     const [hasStarted, setHasStarted] = useState(false);
-    const fn = useCallback(callback, []);
+
+    // set the callback once, on mount
+    const cb = useCallback(callback, []);
 
     useEffect(() => {
         const tick = () => {
-            fn();
+            cb();
         };
 
         if (!hasStarted) {
@@ -30,7 +32,7 @@ export function usePolling(callback: Function, interval: number) {
         }
 
         return () => {};
-    }, [fn, hasStarted, interval]);
+    }, [cb, hasStarted, interval]);
 }
 
 export default usePolling;
