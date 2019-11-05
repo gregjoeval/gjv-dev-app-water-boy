@@ -1,30 +1,20 @@
-import {Configuration, FullstrideGameControllerApi, SportingEventControllerApi} from '@gjv-dev/api-client-water-boy';
+import {ApiClient, FullstrideGameControllerApi, SportingEventControllerApi} from '@gjv-dev/api-client-water-boy';
 import moment from 'moment';
 import {FullstrideGameFormat} from '../constants/dateTimeFormats';
+import type {IFullstrideGame} from '../models/fullstride-game';
 import FullstrideGame from '../models/fullstride-game';
 import * as R from 'ramda';
-import type {IFullstrideGame} from '../models/fullstride-game';
-import type {ConfigurationParameters, FullstrideGameControllerApiType, SportingEventControllerApiType} from '@gjv-dev/api-client-water-boy';
-import SportingEvent from '../models/sporting-event';
 import type {ISportingEvent, ISportingEventViewModel} from '../models/sporting-event';
+import SportingEvent from '../models/sporting-event';
 
-/**
- * factory function for service configuration
- * @param {ConfigurationParameters} options -
- * @returns {Configuration} -
- */
-const createConfiguration = (options: $Shape<ConfigurationParameters> = {}): Configuration => new Configuration({basePath: process.env.REACT_APP__WATER_BOY_API__URI, ...options});
-
-const createFullstrideGameService = (): FullstrideGameControllerApiType => {
-    const config = createConfiguration();
-    // eslint-disable-next-line new-cap
-    return FullstrideGameControllerApi(config);
+const createFullstrideGameService = () => {
+    const client = new ApiClient();
+    return new FullstrideGameControllerApi(client);
 };
 
-const createSportingEventService = (): SportingEventControllerApiType => {
-    const config = createConfiguration();
-    // eslint-disable-next-line new-cap
-    return SportingEventControllerApi(config);
+const createSportingEventService = () => {
+    const client = new ApiClient();
+    return new SportingEventControllerApi(client);
 };
 
 export const FullstrideGames = Object.freeze({
