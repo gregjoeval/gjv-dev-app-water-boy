@@ -8,7 +8,7 @@ import React, {useState, useEffect, useCallback} from 'react';
  * @param {number} interval -
  * @returns {void} -
  */
-export function usePolling(callback: Function, interval: number) {
+function usePolling(callback: Function, interval: number) {
     const [hasStarted, setHasStarted] = useState(false);
 
     // set the callback once, on mount
