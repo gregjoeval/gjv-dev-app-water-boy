@@ -1,16 +1,22 @@
 // @flow
 import React, {Component} from 'react';
-import {Card, CardActions, CardContent, Typography, CardHeader} from '@material-ui/core';
+import {Card, CardActions, CardContent, Typography, CardHeader, Avatar} from '@material-ui/core';
 import {makeStyles, useTheme} from '@material-ui/styles';
 import ContentLayout from '../content-layout';
 import moment from 'moment';
 import {EventCardFormat} from '../../constants/dateTimeFormats';
 import {Skeleton} from '@material-ui/lab';
+import * as R from 'ramda';
+import toMaterialStyle from 'material-color-hash';
 
 const useStyles = makeStyles((theme) => ({
     card: {
         minWidth: theme.spacing(30)
-    }
+    },
+    avatar: (props) => ({
+        backgroundColor: props.backgroundColor,
+        color: props.color
+    })
 }));
 
 type EventCardPlaceholderProps = {
@@ -40,11 +46,19 @@ type EventCardProps = {
 };
 
 const EventCard = ({children, group, subgroup, dateTime, location, subtext, actions, headerAction}: EventCardProps): Component => {
-    const classes = useStyles();
+    const initials = R.toUpper(R.join('')(R.compose(R.map(R.head), R.take(2), R.filter(x => Boolean(x)), R.split(/[^\w\d]/))(location)));
+    const {backgroundColor, color} = toMaterialStyle(location);
+    const classes = useStyles({backgroundColor, color});
+
     return (
         <Card className={classes.card}>
             <CardHeader
                 action={headerAction}
+                avatar={(
+                    <Avatar className={classes.avatar}>
+                        {initials}
+                    </Avatar>
+                )}
                 title={(
                     <Typography>
                         {moment(dateTime).format(EventCardFormat)}
