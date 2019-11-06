@@ -6,4 +6,4 @@ import {AuthCallbackScreen} from './auth-callback';
 import {NotFoundScreen} from './not-found';
 
 export const allScreens = {HomeScreen, AccountScreen, GamesScreen, FullstrideGamesScreen, AuthCallbackScreen, NotFoundScreen};
-export const navigableScreens = {HomeScreen, AccountScreen, GamesScreen, FullstrideGamesScreen};
+export const navigableScreens = {HomeScreen, GamesScreen, FullstrideGamesScreen};
