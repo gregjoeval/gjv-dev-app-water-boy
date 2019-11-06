@@ -28,17 +28,17 @@ export const FullstrideGames = Object.freeze({
     },
     post: async (model: IFullstrideGame): IFullstrideGame => {
         const service = createFullstrideGameService();
-        const apiModel = await service.fullstrideGameControllerCreate(model);
+        const apiModel = await service.fullstrideGameControllerCreate({fullstrideGame: model});
         return FullstrideGame.create(apiModel);
     },
     put: async (model: IFullstrideGame): IFullstrideGame => {
         const service = createFullstrideGameService();
-        await service.fullstrideGameControllerReplaceById(model.id, model);
+        await service.fullstrideGameControllerReplaceById(model.id, {fullstrideGame: model});
         return FullstrideGame.create(model);
     },
     patch: async (model: IFullstrideGame): IFullstrideGame => {
         const service = createFullstrideGameService();
-        await service.fullstrideGameControllerUpdateById(model.id, model);
+        await service.fullstrideGameControllerUpdateById(model.id, {fullstrideGame: model});
         return FullstrideGame.create(model);
     },
     delete: async (id: string): null => {
@@ -57,19 +57,19 @@ export const SportingEvents = Object.freeze({
     post: async (model: ISportingEvent|ISportingEventViewModel): ISportingEventViewModel => {
         const service = createSportingEventService();
         const apiModel = SportingEvent.createApiModel(model);
-        const data = await service.sportingEventControllerCreate(apiModel);
+        const data = await service.sportingEventControllerCreate({sportingEvent: apiModel});
         return SportingEvent.create(data);
     },
     put: async (model: ISportingEvent|ISportingEventViewModel): ISportingEventViewModel => {
         const service = createSportingEventService();
         const apiModel = SportingEvent.createApiModel(model);
-        await service.sportingEventControllerReplaceById(apiModel.id, apiModel);
+        await service.sportingEventControllerReplaceById(apiModel.id, {sportingEvent: apiModel});
         return SportingEvent.create(model);
     },
     patch: async (model: ISportingEvent|ISportingEventViewModel): ISportingEventViewModel => {
         const service = createSportingEventService();
         const apiModel = SportingEvent.createApiModel(model);
-        await service.sportingEventControllerUpdateById(apiModel.id, apiModel);
+        await service.sportingEventControllerUpdateById(apiModel.id, {sportingEvent: apiModel});
         return SportingEvent.create(model);
     },
     delete: async (id: string): null => {
