@@ -1,52 +1,25 @@
 // @flow
-import React, {Component, useEffect, useState} from 'react';
-import {Button, Typography} from '@material-ui/core';
+import React, {Component} from 'react';
+import {Typography} from '@material-ui/core';
 import AppHeader from '../../components/app-header';
 import ScreenLayout from '../../components/screen-layout';
 import ContentLayout from '../../components/content-layout';
 import {Home as Icon} from '@material-ui/icons';
 import Screen from '../../models/screen';
 import {useDispatch, useSelector} from 'react-redux';
-import * as R from 'ramda';
-import EventCard, {EventCardPlaceholder} from '../../components/event-card';
 import {getSportingEventsAsync} from '../../actions/sportingEvents';
-import moment from 'moment';
-import SportingEvent from '../../models/sporting-event';
-import type {IFullstrideGame} from '../../models/fullstride-game';
+import useSportingEventCardList from '../../libs/useSportingEventCardList';
+import usePolling from '../../libs/usePolling';
 
 const Home = (): Component => {
     const {loading, data, error} = useSelector(state => state.sportingEvents);
     const dispatch = useDispatch();
-    const [shouldFetch, setShouldFetch] = useState(true);
 
-    useEffect(() => {
-        if (shouldFetch) {
-            dispatch(getSportingEventsAsync());
-            setShouldFetch(false);
-        }
-    }, [dispatch, shouldFetch]);
+    usePolling(() => {
+        dispatch(getSportingEventsAsync());
+    }, 10 * 60 * 1000);
 
-    const values = R.values(data);
-    const filteredData = R.sortWith([R.descend((item: IFullstrideGame) => {
-        const dateTimeA = moment(item.dateTime);
-        return dateTimeA.valueOf();
-    })], values);
-
-    const list = R.reduce((acc, item) => {
-        const model = SportingEvent.create(item);
-        const element = (
-            <EventCard
-                dateTime={model.dateTime}
-                group={model.season}
-                key={model.id}
-                location={model.location}
-                subgroup={model.division}
-                subtext={`${model.homeTeamScore} - ${model.awayTeamScore}`}
-            />
-        );
-
-        return R.append(element, acc);
-    }, [], filteredData);
+    const [list, placeholderList] = useSportingEventCardList(data);
 
     return (
         <ScreenLayout
@@ -66,12 +39,6 @@ const Home = (): Component => {
                         </Typography>
                     )
                 }
-                <Button
-                    href={null}
-                    onClick={() => setShouldFetch(true)}
-                >
-                    {'refresh'}
-                </Button>
                 <ContentLayout
                     direction={'row'}
                     justify={'flex-start'}
@@ -84,14 +51,8 @@ const Home = (): Component => {
                 >
                     {
                         loading
-                            ? R.repeat(
-                                <EventCardPlaceholder
-                                    key={'EventCardPlaceholder'}
-                                />
-                                , 12)
-                            : (
-                                list
-                            )
+                            ? placeholderList
+                            : list
                     }
                 </ContentLayout>
             </ContentLayout>

@@ -1,6 +1,6 @@
 // @flow
-import React, {Component, useEffect, useState, Fragment} from 'react';
-import {Typography, Button, IconButton} from '@material-ui/core';
+import React, {Component, useState, Fragment} from 'react';
+import {Typography, IconButton} from '@material-ui/core';
 import {useDispatch, useSelector} from 'react-redux';
 import AppHeader from '../../components/app-header';
 import ScreenLayout from '../../components/screen-layout';
@@ -16,21 +16,18 @@ import moment from 'moment';
 import FullstrideGameDialogMerge from '../../components/fullstride-game-dialog-merge';
 import {postSportingEventAsync} from '../../actions/sportingEvents';
 import CallMergeIcon from '@material-ui/icons/CallMerge';
+import usePolling from '../../libs/usePolling';
 
 const FullstrideGames = (): Component => {
     const {loading, data, error} = useSelector(state => state.fullstrideGames);
     const dispatch = useDispatch();
-    const [shouldFetch, setShouldFetch] = useState(true);
 
     const [openDialogId, setOpenDialogId] = useState(null);
     const dialogIdPrefix = 'fullstride-game-dialog-';
 
-    useEffect(() => {
-        if (shouldFetch) {
-            dispatch(getFullstrideGamesAsync());
-            setShouldFetch(false);
-        }
-    }, [dispatch, shouldFetch]);
+    usePolling(() => {
+        dispatch(getFullstrideGamesAsync());
+    }, 10 * 60 * 1000);
 
     const values = R.values(data);
     const filteredData = R.sortWith([R.descend((item: IFullstrideGame) => {
@@ -91,12 +88,6 @@ const FullstrideGames = (): Component => {
                         </Typography>
                     )
                 }
-                <Button
-                    href={null}
-                    onClick={() => setShouldFetch(true)}
-                >
-                    {'refresh'}
-                </Button>
                 <ContentLayout
                     direction={'row'}
                     justify={'flex-start'}
