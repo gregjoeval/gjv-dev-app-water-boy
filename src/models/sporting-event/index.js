@@ -59,13 +59,13 @@ const createApiModel = (args?: $Shape<ISportingEventViewModel>): SportingEventAp
 };
 
 const isValid = (model?: $Shape<ISportingEvent>): boolean => {
-    const keys = R.keys(model);
-    const isModelValid = R.reduce((acc, key) => {
-        const result = Boolean(model[key]);
+    const values = R.props(['id', 'dateTime', 'location'], model);
+    const isModelValid = R.reduce((acc, value) => {
+        const result = Boolean(value);
         return result
             ? acc && result
             : R.reduced(result); // fail at first invalid value
-    }, true, keys);
+    }, true, values);
     return Boolean(isModelValid);
 };
 
