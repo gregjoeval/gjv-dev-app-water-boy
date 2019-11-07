@@ -57,7 +57,7 @@ const makeDictionaryReducer = <TActionTypes: ActionTypes, TInput: DataStore, T: 
         return factoryFunction({...initState, lastUpdated: state.lastUpdated, data: data});
     };
     const hydrateAction = (state: T, action: IAction<T>) => {
-        const newState = updateAction(state, action);
+        const newState = setAction(state, action);
         const now = moment().toISOString(true);
         return factoryFunction({...initState, ...newState, lastUpdated: now});
     };
