@@ -100,7 +100,8 @@ const Games = (): Component => {
                     xs={12}
                 >
                     {
-                        loading
+                        // remove the length check to always show loading
+                        loading && R.length(list) === 0
                             ? placeholderList
                             : list
                     }
