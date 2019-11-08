@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, {useState, useEffect, useCallback, useRef} from 'react';
+import {useState, useEffect, useRef} from 'react';
 
 /**
  * useInterval with some modifications for my use case
@@ -22,10 +21,8 @@ function usePolling(callback: Function, interval: number, limit?: number = null)
     // Set up the interval.
     useEffect(() => {
         const tick = () => {
-            if (!limit || count < limit) {
-                savedCallback.current();
-                setCount(x => x + 1);
-            }
+            savedCallback.current();
+            setCount(x => x + 1);
         };
 
         if (!hasStarted) {
@@ -33,10 +30,10 @@ function usePolling(callback: Function, interval: number, limit?: number = null)
             tick();
         }
 
-        if (interval !== null) {
-            const id = window.setInterval(tick, interval);
+        if (interval !== null && (!limit || count < limit)) {
+            const id = window.setTimeout(tick, interval);
             return () => {
-                window.clearInterval(id);
+                window.clearTimeout(id);
             };
         }
 
