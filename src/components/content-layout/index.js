@@ -1,5 +1,6 @@
 // @flow
-import React, {Component} from 'react';
+import React from 'react';
+import type {Element} from 'react';
 import * as R from 'ramda';
 import Grid, {
     GridContentAlignment,
@@ -9,6 +10,7 @@ import Grid, {
     GridWrap
 } from '@material-ui/core/Grid';
 import {makeStyles} from '@material-ui/styles';
+import selectTruthyResults from '../../libs/selectTruthyResults';
 
 const useStyles = makeStyles(theme => ({
     breakpointSpacing: {
@@ -48,7 +50,7 @@ const waterfallValues = (defaultValue, valueArray = []) => {
 type ContentLayoutProps = {
     alignContent?: GridContentAlignment,
     alignItems?: GridItemsAlignment,
-    children: Array<Node> | Node,
+    children: Node,
     className?: string,
     containerClassName?: string,
     direction?: GridDirection,
@@ -76,7 +78,7 @@ type ContentLayoutProps = {
  *      https://css-tricks.com/snippets/css/a-guide-to-flexbox/
  * @param {GridContentAlignment} alignContent - defines alignment for item lines within the container
  * @param {GridItemsAlignment} alignItems - defines alignment perpendicular to the main axis
- * @param {Array<Node> | Node} children - element(s), component(s)
+ * @param {Node} children - element(s), component(s)
  * @param {string} className - jss class on each item
  * @param {string} containerClassName - jss class on the container
  * @param {GridDirection} direction - the main axis; direction in which items will flow in a container
@@ -112,24 +114,25 @@ const ContentLayout = (
         lg,
         xl
     }: ContentLayoutProps
-): Component => {
+): Element<Grid> => {
     const classes = useStyles();
     const x = waterfallValues('auto', [xs, sm, md, lg, xl]);
     const [xsVal, smVal, mdVal, lgVal, xlVal] = x;
+    const truthyChildren = selectTruthyResults(children);
     return (
         <Grid
             alignContent={alignContent}
             alignItems={alignItems}
-            className={`${Boolean(containerClassName) ? containerClassName : ''}`}
+            className={`${containerClassName ? containerClassName : ''}`}
             container={true}
             direction={direction}
             justify={justify}
             spacing={spacing}
             wrap={wrap}
         >
-            {[].concat(children).map((child, index) => (
+            {(truthyChildren || []).map((child, index) => (
                 <Grid
-                    className={`${enableBreakpointSpacing ? classes.breakpointSpacing : ''} ${Boolean(className) ? className : ''}`}
+                    className={`${enableBreakpointSpacing ? classes.breakpointSpacing : ''} ${className ? className : ''}`}
                     item={true}
                     key={index}
                     lg={lgVal}
