@@ -54,7 +54,7 @@ const create = (args?: $Shape<ISportingEventViewModel>): ISportingEventViewModel
 
 const createApiModel = (args?: $Shape<ISportingEventViewModel>): SportingEventApiModel => {
     const model = create(args);
-    const o = R.omit(['edited'], model); // omit view model props
+    const o = SportingEventApiModel.constructFromObject(model);
     return Object.freeze(o);
 };
 
