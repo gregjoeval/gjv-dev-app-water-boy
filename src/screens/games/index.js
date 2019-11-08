@@ -1,6 +1,6 @@
 // @flow
 import React, {Component} from 'react';
-import {Button, IconButton, Snackbar, Typography} from '@material-ui/core';
+import {Typography} from '@material-ui/core';
 import AppHeader from '../../components/app-header';
 import ScreenLayout from '../../components/screen-layout';
 import ContentLayout from '../../components/content-layout';
@@ -8,10 +8,11 @@ import Screen from '../../models/screen';
 import {useDispatch, useSelector} from 'react-redux';
 import * as R from 'ramda';
 import {cancelUndoableSportingEvent, getSportingEventsAsync, undoSportingEvent} from '../../actions/sportingEvents';
-import {Close as CloseIcon, SportsHockey as SportsHockeyIcon} from '@material-ui/icons';
+import {SportsHockey as SportsHockeyIcon} from '@material-ui/icons';
 import usePolling from '../../libs/usePolling';
 import useSportingEventCardList from '../../libs/useSportingEventCardList';
 import useSportingEventDialogCreate from '../../libs/useSportingEventDialogCreate';
+import UndoUpdateSnackBar from '../../components/update-snack-bar';
 
 const Games = (): Component => {
     const {loading, data, error, past, canceled} = useSelector(state => state.sportingEvents);
@@ -24,57 +25,18 @@ const Games = (): Component => {
         dispatch(getSportingEventsAsync());
     }, 10 * 60 * 1000);
 
-    const updateSnackBar = (
-        <Snackbar
-            action={[
-                <Button
-                    color='secondary'
-                    key='undo'
-                    onClick={() => dispatch(undoSportingEvent())}
-                    size='small'
-                >
-                    {'undo'}
-                </Button>,
-                <IconButton
-                    aria-label='close'
-                    color='inherit'
-                    key='close'
-                    onClick={() => {
-                        dispatch(cancelUndoableSportingEvent());
-                    }}
-                >
-                    <CloseIcon/>
-                </IconButton>
-            ]}
-            anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left'
-            }}
-            autoHideDuration={6000}
-            ContentProps={{
-                'aria-describedby': 'sporting-event-snackbar-undo'
-            }}
-            message={(
-                <Typography
-                    id={'sporting-event-snackbar-undo'}
-                    variant={'body1'}
-                >
-                    {'Updated.'}
-                </Typography>
-            )}
-            onClose={() => {
-                dispatch(cancelUndoableSportingEvent());
-            }}
-            open={!canceled && R.length(past) > 0}
-        />
-    );
-
     return (
         <ScreenLayout
             header={<AppHeader/>}
         >
             {createFab}
-            {updateSnackBar}
+            <UndoUpdateSnackBar
+                canceled={canceled}
+                closeAction={() => dispatch(cancelUndoableSportingEvent())}
+                id={'sporting-event-snackbar-update-undo'}
+                past={past}
+                undoAction={() => dispatch(undoSportingEvent())}
+            />
             <ContentLayout
                 enableBreakpointSpacing={true}
                 spacing={1}
