@@ -79,8 +79,9 @@ export const postFullstrideGameAsync = (model: IFullstrideGame) => async dispatc
     dispatch(Action.create(actionTypes.REQUEST));
 
     try {
-        const newModel = await FullstrideGames.post(model);
-        dispatch(updateFullstrideGame(newModel));
+        await FullstrideGames.post(model);
+        const models = await FullstrideGames.get();
+        dispatch(updateFullstrideGames(models));
     } catch (e) {
         dispatch(Action.create(actionTypes.FAIL, Error('Failed to post.'), true));
     }
@@ -96,7 +97,8 @@ export const putFullstrideGameAsync = (model: ISportingEvent) => async dispatch 
 
     try {
         await FullstrideGames.put(model);
-        dispatch(updateFullstrideGame(model));
+        const models = await FullstrideGames.get();
+        dispatch(updateFullstrideGames(models));
     } catch (e) {
         dispatch(Action.create(actionTypes.FAIL, Error('Failed to put.'), true));
     }
@@ -112,7 +114,8 @@ export const patchFullstrideGameAsync = (model: ISportingEvent) => async dispatc
 
     try {
         await FullstrideGames.patch(model);
-        dispatch(updateFullstrideGame(model));
+        const models = await FullstrideGames.get();
+        dispatch(updateFullstrideGames(models));
     } catch (e) {
         dispatch(Action.create(actionTypes.FAIL, Error('Failed to patch.'), true));
     }

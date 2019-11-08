@@ -57,9 +57,10 @@ const makeDictionaryReducer = <TActionTypes: ActionTypes, TInput: DataStore, T: 
         return factoryFunction({...initState, lastUpdated: state.lastUpdated, data: data});
     };
     const hydrateAction = (state: T, action: IAction<T>) => {
-        const newState = setAction(state, action);
+        const data = R.mergeDeepRight(state.data, action.payload);
+        const newData = R.pickAll(R.keys(action.payload), data);
         const now = moment().toISOString(true);
-        return factoryFunction({...initState, ...newState, lastUpdated: now});
+        return factoryFunction({...initState, data: newData, lastUpdated: now});
     };
 
     const defaultActionsDictionary = {

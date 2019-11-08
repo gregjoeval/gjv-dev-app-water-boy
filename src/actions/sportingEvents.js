@@ -111,8 +111,9 @@ export const postSportingEventAsync = (model: ISportingEvent) => async dispatch 
     dispatch(Action.create(actionTypes.REQUEST));
 
     try {
-        const newModel = await SportingEvents.post(model);
-        dispatch(hydrateSportingEvent(newModel));
+        await SportingEvents.post(model);
+        const models = await SportingEvents.get();
+        dispatch(hydrateSportingEvents(models));
     } catch (e) {
         dispatch(Action.create(actionTypes.FAIL, Error('Failed to post.'), true));
     }
@@ -128,7 +129,8 @@ export const putSportingEventAsync = (model: ISportingEvent) => async dispatch =
 
     try {
         await SportingEvents.put(model);
-        dispatch(hydrateSportingEvent(model));
+        const models = await SportingEvents.get();
+        dispatch(hydrateSportingEvents(models));
     } catch (e) {
         dispatch(Action.create(actionTypes.FAIL, Error('Failed to put.'), true));
     }
@@ -144,7 +146,8 @@ export const patchSportingEventAsync = (model: ISportingEvent) => async dispatch
 
     try {
         await SportingEvents.patch(model);
-        dispatch(hydrateSportingEvent(model));
+        const models = await SportingEvents.get();
+        dispatch(hydrateSportingEvents(models));
     } catch (e) {
         dispatch(Action.create(actionTypes.FAIL, Error('Failed to patch.'), true));
     }
