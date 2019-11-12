@@ -89,6 +89,7 @@ function useSportingEventCardList(models, withActions = false) {
                             )
                         ]
                     )}
+                    awayTeam={`${model.awayTeamId}${model.awayTeamScore ? `: ${model.awayTeamScore}` : ''}`}
                     dateTime={model.dateTime}
                     group={model.season}
                     headerAction={(
@@ -104,9 +105,8 @@ function useSportingEventCardList(models, withActions = false) {
                             </Tooltip>
                         )
                     )}
+                    homeTeam={`${model.homeTeamId}${model.homeTeamScore ? `: ${model.homeTeamScore}` : ''}`}
                     location={model.location}
-                    subgroup={model.division}
-                    subtext={timeFromNow > 0 && `${model.homeTeamScore} - ${model.awayTeamScore}`}
                 />
             </Fragment>
         );

@@ -62,7 +62,7 @@ const FullstrideGames = (): Component => {
                     )}
                     id={model.number}
                     location={model.rink}
-                    subtext={model.teams}
+                    homeTeam={model.teams}
                 />
             </Fragment>
         );

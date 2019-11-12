@@ -37,15 +37,15 @@ export const EventCardPlaceholder = ({withActions = false}: EventCardPlaceholder
 type EventCardProps = {
     children?: Array<Node> | Node,
     group: string,
-    subgroup?: string,
+    awayTeam?: string,
     dateTime: string,
     location: string,
-    subtext?: string,
+    homeTeam?: string,
     actions?: Node,
     headerAction?: Node,
 };
 
-const EventCard = ({children, group, subgroup, dateTime, location, subtext, actions, headerAction}: EventCardProps): Component => {
+const EventCard = ({children, group, awayTeam, dateTime, location, homeTeam, actions, headerAction}: EventCardProps): Component => {
     const initials = R.toUpper(R.join('')(R.compose(R.map(R.head), R.take(2), R.filter(x => Boolean(x)), R.split(/[^\w\d]/))(location)));
     const {backgroundColor, color} = toMaterialStyle(location);
     const classes = useStyles({backgroundColor, color});
@@ -75,7 +75,7 @@ const EventCard = ({children, group, subgroup, dateTime, location, subtext, acti
                         {location}
                     </Typography>
                     <Typography variant={'body2'}>
-                        {group}
+                        {homeTeam}
                     </Typography>
                 </ContentLayout>
                 <ContentLayout
@@ -84,10 +84,10 @@ const EventCard = ({children, group, subgroup, dateTime, location, subtext, acti
                     wrap={'wrap'}
                 >
                     <Typography variant={'body2'}>
-                        {subtext}
+                        {group}
                     </Typography>
                     <Typography variant={'body2'}>
-                        {subgroup}
+                        {awayTeam}
                     </Typography>
                 </ContentLayout>
                 {children}

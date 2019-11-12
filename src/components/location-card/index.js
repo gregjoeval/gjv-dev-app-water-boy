@@ -43,7 +43,6 @@ type EventCardProps = {
 
 const LocationCard = ({children, name, link, address, actions}: EventCardProps): Component => {
     const initials = R.toUpper(R.join('')(R.compose(R.map(R.head), R.take(2), R.filter(x => Boolean(x)), R.split(/[^\w\d]/))(name)));
-    debugger;
     const {backgroundColor, color} = toMaterialStyle(name);
     const classes = useStyles({backgroundColor, color});
 

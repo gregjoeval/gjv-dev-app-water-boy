@@ -25,7 +25,6 @@ function useLocationCardList(models, withActions = false) {
 
     const list = R.reduce((acc, item) => {
         const model = Location.create(item);
-        debugger;
 
         const element = (
             <Fragment key={model.id}>
